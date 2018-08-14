@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Gutmensch?",
+    "version": "0.0.1",
+    "sdkVersion": "27.0.0",
+    "icon": "./icon.png",
+    "ios": {
+      "bundleIdentifier": "de.verein-allgemeinbildung.gutmensch"
+    },
+    "android": {
+      "package": "de.vereinallgemeinbildung.gutmensch"
+    }
+  }
+}
