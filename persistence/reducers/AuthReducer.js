@@ -16,6 +16,11 @@ const initialState = (token => ({
 
 export default function (state = initialState, action) {
     switch (action.type){
+        case CHECK_EMAIL_EXISTS:
+
+        case LOGIN:
+
+        case REGISTER:
         default:
             return state;
     }
