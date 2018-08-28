@@ -24,7 +24,7 @@ class ProfileScreen extends Component {
     }
 
     _signOutAsync = async() => {
-        await AsyncStorage.removeItem("userToken");
+        await AsyncStorage.removeItem("loginData");
         this.props.navigation.navigate('Auth');
     };
 

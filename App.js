@@ -12,6 +12,7 @@ import CheckUserExistsScreen from "./components/CheckUserExistsScreen";
 import {Provider} from "react-redux";
 
 import store from "./persistence/store"
+import TreeScreen from "./components/TreeScreen";
 
 class Root extends Component {
     render() {
@@ -42,7 +43,7 @@ class AuthLoadingScreen extends Component {
     }
 
     async _bootstrapAsync() {
-        const userToken = await AsyncStorage.getItem('userToken');
+        const userToken = await AsyncStorage.getItem('loginData');
         this.props.navigation.navigate(userToken ? 'App' : 'Auth');
     }
 
@@ -62,6 +63,9 @@ const AppNav = createMaterialBottomTabNavigator({
     },
     ChallengeTab: {
         screen: ChallengeScreen
+    },
+    ProgressTab: {
+        screen: TreeScreen
     },
     ProfileTab: {
         screen: ProfileScreen
