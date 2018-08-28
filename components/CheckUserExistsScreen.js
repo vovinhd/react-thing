@@ -15,15 +15,7 @@ class CheckUserExistsScreen extends Component {
         super();
         this.state = {
             loading: true,
-            action: "check",
-            userData: {
-                email: '',
-                screenName: '',
-                password: '',
-                password2: '',
-                gdprAccept: false,
-                newsLetterAccept: false
-            }
+            email: '',
         };
     }
 
@@ -42,49 +34,37 @@ class CheckUserExistsScreen extends Component {
     };
 
     checkUserExists = async () => {
-        console.log("check " + this.state.userData.email);
-        Api.checkEmailExists(this.state.userData.email,
+        console.log("check " + this.state.email);
+        console.log(this.state);
+        Api.checkEmailExists(this.state.email,
             (res) => {
-                console.log("ApiCall returned");
+                console.log(res.data.status == true);
+                if(res.status === 200) {
+                    this.props.navigation.navigate(res.data.status === "true" ? 'LoginScreen' : 'SignUpScreen', {email: this.state.email});
+                }
             },
             (err) => {
                 console.error(err);
-            });
+        });
     };
 
-    renderForm(action) {
-        switch (action) {
-            case "check":
-                return (
-                    <Form>
-                        <FormItem floatingLabel>
-                            <Label>Email</Label>
-                            <Input/>
-                        </FormItem>
-                        <Button full primary style={{paddingBottom: 4}} onPress={() => this.checkUserExists()}>
-                            <Text> Next </Text>
-                        </Button>
-                    </Form>
-                );
-            case "login":
-                return (<Text>login form</Text>);
-            case "register":
-                return (<Text>register form</Text>);
-            default:
-                return (<Text>unreachable</Text>);
-        }
-    }
 
     render() {
         if (this.state.loading) {
             return (<Expo.AppLoading/>)
         }
-
-        var form = this.renderForm(this.state.action);
         return (
             <Container style={{paddingTop: Constants.statusBarHeight}}>
-                {form}
-
+                <Form>
+                    <FormItem floatingLabel>
+                        <Label>Email</Label>
+                        <Input name="email" onChangeText={(text) => this.setState({email: text})}
+                               value={this.state.email}/>
+                    </FormItem>
+                    <Button full primary style={{paddingBottom: 4}} onPress={() => this.checkUserExists()}>
+                        <Text> Next </Text>
+                    </Button>
+                </Form>
             </Container>
         );
     };

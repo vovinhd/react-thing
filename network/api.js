@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const verbose = true;
+const verbose = false;
 var appContext = null;
 
 const baseUrl = "http://10.0.2.2:3000/" // works on android emulator ONLY!!
