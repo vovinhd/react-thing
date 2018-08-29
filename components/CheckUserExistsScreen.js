@@ -28,11 +28,6 @@ class CheckUserExistsScreen extends Component {
         this.setState({loading: false})
     };
 
-    signIn = async () => {
-        await AsyncStorage.setItem('userToken', 'temp');
-        this.props.navigation.navigate('App');
-    };
-
     checkUserExists = async () => {
         console.log("check " + this.state.email);
         console.log(this.state);

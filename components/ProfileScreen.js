@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {AsyncStorage, View} from 'react-native';
-import {Button, Text} from "native-base";
+import {Button, Icon, Text} from "native-base";
 import Expo from "expo";
 
 class ProfileScreen extends Component {
 
     static navigationOptions = {
-        title: 'Profile'
+        title: 'Profile',
+        tabBarIcon: ({focused, tintColor}) => (
+            <Icon name='home' style={{fontSize: 20, color: tintColor}}/>
+        ),
     };
 
     constructor(props) {

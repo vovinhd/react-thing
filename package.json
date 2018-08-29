@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-plugin-inline-dotenv": "^1.1.2",
     "jest-expo": "~27.0.0",
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1"
@@ -19,8 +20,14 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "apollo-boost": "^0.1.15",
+    "apollo-link-context": "^1.0.8",
+    "apollo-link-http": "latest",
+    "apollo-upload-client": "^8.1.0",
     "axios": "^0.18.0",
     "expo": "^27.0.1",
+    "graphql": "^0.13.2",
+    "graphql-tag": "latest",
     "native-base": "^2.7.1",
     "react": "16.3.1",
     "react-apollo": "^2.1.11",
@@ -34,6 +41,7 @@
     "redux": "^4.0.0",
     "redux-axios-middleware": "^4.0.0",
     "redux-form": "^7.4.2",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "apollo-cache-inmemory": "latest"
   }
 }

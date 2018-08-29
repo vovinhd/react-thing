@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import { ActivityIndicator, AsyncStorage, Button, StatusBar, StyleSheet, Text, View } from 'react-native';
-
-import Api from './network/api';
+import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import LoginScreen from "./components/LoginScreen";
@@ -13,27 +11,28 @@ import {Provider} from "react-redux";
 
 import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
+import FeedScreen from "./components/FeedScreen";
 
 class Root extends Component {
     render() {
         return (
             <Provider store={store}>
-                <RootNavigation />
+                <RootNavigation/>
             </Provider>
         )
     }
 }
 
 class HomeScreen extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text>Open up App.js to start working on your app!</Text>
+                <Text>Changes you make will automatically reload.</Text>
+                <Text>Shake your phone to open the developer menu.</Text>
+            </View>
+        );
+    }
 }
 
 class AuthLoadingScreen extends Component {
@@ -43,7 +42,7 @@ class AuthLoadingScreen extends Component {
     }
 
     async _bootstrapAsync() {
-        const userToken = await AsyncStorage.getItem('loginData');
+        const userToken = await AsyncStorage.getItem('token');
         this.props.navigation.navigate(userToken ? 'App' : 'Auth');
     }
 
@@ -58,19 +57,24 @@ class AuthLoadingScreen extends Component {
 }
 
 const AppNav = createMaterialBottomTabNavigator({
-    HomeTab: {
-        screen: HomeScreen
-    },
-    ChallengeTab: {
-        screen: ChallengeScreen
-    },
-    ProgressTab: {
-        screen: TreeScreen
-    },
-    ProfileTab: {
-        screen: ProfileScreen
+        FeedTab: {
+            screen: FeedScreen
+        },
+        ChallengeTab: {
+            screen: ChallengeScreen
+        },
+        ProgressTab: {
+            screen: TreeScreen
+        },
+        ProfileTab: {
+            screen: ProfileScreen
+        }
+    }, {
+        activeTintColor: '#f0edf6',
+        inactiveTintColor: '#105229',
+        barStyle: {backgroundColor: '#179154'},
     }
-});
+);
 
 const AuthNav = createStackNavigator({
         CheckUserExistsScreen: {
@@ -89,9 +93,9 @@ const AuthNav = createStackNavigator({
             headerVisible: false,
         },
         initialRouteName: 'CheckUserExistsScreen',
-});
+    });
 
-const RootNavigation = createSwitchNavigator( {
+const RootNavigation = createSwitchNavigator({
     AuthLoading: AuthLoadingScreen,
     App: AppNav,
     Auth: AuthNav
@@ -102,10 +106,10 @@ const RootNavigation = createSwitchNavigator( {
 export default Root;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });

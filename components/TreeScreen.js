@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Button } from 'react-native';
 import FadeIn from 'react-native-fade-in-image';
+import {Icon} from "native-base";
 // You can import from local files
 // or any pure javascript modules available in npm
 class Sprite extends React.PureComponent {
@@ -31,6 +32,14 @@ class Sprite extends React.PureComponent {
 }
 
 export default class App extends React.Component {
+
+    static navigationOptions = {
+        title: 'Fortschritt',
+        tabBarIcon: ({focused, tintColor}) => (
+            <Icon name='leaf' style={{fontSize: 20, color: tintColor}}/>
+        ),
+    };
+
     leafTransforms = [
         {
             loc: {
@@ -179,7 +188,7 @@ export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { leafCount: 12 };
+        this.state = { leafCount: 0 };
         this.onPressAddLeaf = this.onPressAddLeaf.bind(this);
         this.onPressSubLeaf = this.onPressSubLeaf.bind(this);
     }

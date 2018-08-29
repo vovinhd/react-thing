@@ -49,7 +49,8 @@ class SignUpScreen extends Component {
                         async (res) => {
                             console.log(res.data);
                             if (res.status === 200) {
-                                await AsyncStorage.setItem('loginData', 'res.data');
+                                await AsyncStorage.setItem('uId', res.data.id.toString());
+                                await AsyncStorage.setItem('token', res.data.token);
                                 this.props.navigation.navigate('App');
                             }
                         },
