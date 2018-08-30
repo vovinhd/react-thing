@@ -3,7 +3,7 @@ import axios from 'axios'
 const verbose = false;
 var appContext = null;
 
-const baseUrl = "http://10.0.2.2:3000/" // works on android emulator ONLY!!
+const baseUrl = process.env.API_BASE_URL// works on android emulator ONLY!!
 
 function doPostAuthorized(url, token, data, onSuccess, onError) {
     axios.post(baseUrl + url,data,{

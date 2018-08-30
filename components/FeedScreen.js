@@ -110,6 +110,7 @@ class FeedWidget extends Component {
                                     />
                                 }
                                           data={data.posts}
+                                          keyExtractor={(item, index) => item.id.toString()}
                                           renderItem={({item}) => (
                                               <ListItem icon key={item.id}
                                                         onPress={() => this.props.navigation.navigate('PostWidget', {postId: item.id})}>
