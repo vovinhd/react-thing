@@ -27,7 +27,7 @@ import {ApolloProvider, Mutation, Query} from "react-apollo";
 
 
 const client = new ApolloClient({
-    uri: process.env.API_GRAPH_URL,
+    uri: process.env.API_GRAPH_URL || "https://enviroommate.org/app-dev/api/feed",
     fetchOptions: {
         credentials: 'include'
     },
@@ -40,7 +40,7 @@ const client = new ApolloClient({
         });
     }
 });
-const defaultAvatar = process.env.API_IMG_URL + "avatar_default.png";
+const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img") + "avatar_default.png";
 
 const LOAD_FEED = gql`
     query {
