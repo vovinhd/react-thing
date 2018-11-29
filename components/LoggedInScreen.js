@@ -32,7 +32,7 @@ const AppNav = createMaterialBottomTabNavigator({
     }
 );
 
-const uri = process.env.API_GRAPH_URL || "https://enviroommate.org/app-dev/api/feed"
+const uri ="https://enviroommate.org/app-dev/api/gql";
 
 const uploadLink = createUploadLink({
     uri: uri,
