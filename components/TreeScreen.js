@@ -36,7 +36,7 @@ export default class App extends React.Component {
     static navigationOptions = {
         title: 'Fortschritt',
         tabBarIcon: ({focused, tintColor}) => (
-            <Icon name='leaf' style={{fontSize: 20, color: tintColor}}/>
+            <Icon name='leaf'y   style={{fontSize: 20, color: tintColor}}/>
         ),
     };
 

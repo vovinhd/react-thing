@@ -1,16 +1,73 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {AsyncStorage} from 'react-native';
+import ApolloClient from "apollo-client";
+import {ApolloProvider} from "react-apollo";
+import {ApolloLink, concat} from 'apollo-link';
+import {RetryLink} from 'apollo-link-retry';
+import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
+import FeedScreen from "./FeedScreen";
+import ChallengeScreen from "./ChallengeScreen";
+import ProfileScreen from "./ProfileScreen";
+import TreeScreen from "./TreeScreen";
+import {createUploadLink} from "apollo-upload-client";
+import {InMemoryCache} from "apollo-cache-inmemory";
+import { setContext } from "apollo-link-context"
+const AppNav = createMaterialBottomTabNavigator({
+        FeedTab: {
+            screen: FeedScreen
+        },
+        ChallengeTab: {
+            screen: ChallengeScreen
+        },
+        ProgressTab: {
+            screen: TreeScreen
+        },
+        ProfileTab: {
+            screen: ProfileScreen
+        }
+    }, {
+        activeTintColor: '#f0edf6',
+        inactiveTintColor: '#105229',
+        barStyle: {backgroundColor: '#179154'},
+    }
+);
 
-class LoggedInScreen extends React.Component {
+const uri = process.env.API_GRAPH_URL || "https://enviroommate.org/app-dev/api/feed"
 
+const uploadLink = createUploadLink({
+    uri: uri,
+});
+
+const authLink = setContext(async (_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = await AsyncStorage.getItem('token');
+    // return the headers to the context so httpLink can read them
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : "",
+        }
+    }
+});
+const link = concat(authLink, uploadLink);
+
+client = new ApolloClient({
+    link: link,
+    cache: new InMemoryCache()
+});
+
+export class LoggedInScreen extends React.Component {
+
+    constructor() {
+        super();
+
+    }
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text>LoggedInScreen</Text>
-            </View>
+            <ApolloProvider client={client}>
+                <AppNav/>
+            </ApolloProvider>
         );
     }
 
 };
-
-export default LoggedInScreen;

@@ -12,6 +12,7 @@ import {Provider} from "react-redux";
 import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
 import FeedScreen from "./components/FeedScreen";
+import {LoggedInScreen} from "./components/LoggedInScreen";
 
 class Root extends Component {
     render() {
@@ -56,25 +57,7 @@ class AuthLoadingScreen extends Component {
     }
 }
 
-const AppNav = createMaterialBottomTabNavigator({
-        FeedTab: {
-            screen: FeedScreen
-        },
-        ChallengeTab: {
-            screen: ChallengeScreen
-        },
-        ProgressTab: {
-            screen: TreeScreen
-        },
-        ProfileTab: {
-            screen: ProfileScreen
-        }
-    }, {
-        activeTintColor: '#f0edf6',
-        inactiveTintColor: '#105229',
-        barStyle: {backgroundColor: '#179154'},
-    }
-);
+
 
 const AuthNav = createStackNavigator({
         CheckUserExistsScreen: {
@@ -97,7 +80,7 @@ const AuthNav = createStackNavigator({
 
 const RootNavigation = createSwitchNavigator({
     AuthLoading: AuthLoadingScreen,
-    App: AppNav,
+    App: LoggedInScreen,
     Auth: AuthNav
 }, {
     initialRouteName: 'AuthLoading'

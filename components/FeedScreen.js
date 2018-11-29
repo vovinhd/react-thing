@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import {
     Body,
@@ -21,69 +21,54 @@ import {
     Title
 } from "native-base";
 import Expo, {Constants} from "expo";
-import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
-import {ApolloProvider, Mutation, Query} from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 
 
-const client = new ApolloClient({
-    uri: process.env.API_GRAPH_URL || "https://enviroommate.org/app-dev/api/feed",
-    fetchOptions: {
-        credentials: 'include'
-    },
-    request: async (operation) => {
-        const token = await AsyncStorage.getItem('token');
-        operation.setContext({
-            headers: {
-                authorization: `Bearer ${token}`
-            }
-        });
-    }
-});
-const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img") + "avatar_default.png";
+const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
 
 const LOAD_FEED = gql`
     query {
-      posts {
-        id, title, author {
-            screenName, avatar {path}
+        posts {
+            id, title, author {
+                screenName, avatar {path}
+            }
         }
-      }
     }
 `;
 
 const LOAD_POST = gql`
     query Post($postId: Int!){
-      post(postId: $postId) {
-        id,
-        title,
-        body,
-        author {
-          screenName
-        },
-        comments {
-          id,
-          author {
-            screenName
-          },
-          children {
-            id
-          },
-          parent {
-            id
-          },
-          sentiment
+        post(postId: $postId) {
+            id,
+            title,
+            body,
+            author {
+                screenName
+            },
+            comments {
+                id,
+                author {
+                    screenName
+                },
+                children {
+                    id
+                },
+                parent {
+                    id
+                },
+                sentiment
+            }
         }
-      }
     }
 `;
 const ADD_POST = gql`
     mutation addPost($title: String!, $body: String!){
         addPost(post: {
-        title: $title
-        body: $body
+            title: $title
+            body: $body
         }){
-        title, body
+            title, body
         }
     }
 `;
@@ -207,9 +192,7 @@ class FeedScreen extends Component {
         }
         return (
             <Container style={styles.container}>
-                <ApolloProvider client={client}>
-                    <FeedNavigation/>
-                </ApolloProvider>
+                <FeedNavigation/>
             </Container>
         );
     }
