@@ -1,41 +1,78 @@
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
-import myUploadsQuery from "../network/myUploadsQuery";
-import {React} from "react-native";
+import { ReactNativeFile } from 'apollo-upload-client';
+import React from 'react';
+import { Button, Image, View } from 'react-native';
+import { ImagePicker } from 'expo';
 
-const UploadImage = ({mutate}) => {
-    const handleChange = ({
-        target: {
-            validity,
-            files: [file]
-        }
-    }) => {
-        validity.valid &&
-            mutate({
-                variables: {file},
-                update(
-                    proxy,
-                    {
-                        data: {uploadImage}
-                    }
-                ) {
-                    const data = proxy.readQuery({query: myUploadsQuery})
-                    data.myImageUploads.push(uploadImage);
-                    proxy.writeQuery({query: uploadImage, data})
-                }
+ class UploadImage extends React.Component  {
+    state = {
+        image: null,
+    };
+
+    _pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+
+            // TODO type and name
+            const image = new ReactNativeFile({
+                uri: result.uri,
+                type: 'image/jpg',
+                name: 'i-am-a-name',
+            });
+
+            this.setState({ image: image });
+
+            this.props.mutate({
+                variables: {file: image},
             })
-    }
-    return <input type="file" required onChange={handleChange}/>
+                .then(media => console.log(media))
+                .catch(err => console.error(err));
+        }
+    };
 
+    render() {
+        let image = this.state.image;
+
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Button
+                    title="Pick an image from camera roll"
+                    onPress={this._pickImage}
+                />
+                {image &&
+                <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
+            </View>
+        );
+    }
 }
 
-export default graphql(gql`
-    mutation($file: Upload!) {
-        uploadImage(file: $file) {
+const myMediaQuery = gql`
+    query {
+        myMedia {
             id
             filename
             mimetype
             path
+            uploadedAt
+        }
+    }
+`;
+
+export default graphql(gql`
+    mutation($file: Upload!) {
+        upload(file: $file) {
+            id
+            filename
+            mimetype
+            path
+            uploadedAt
         }
     }
 `)(UploadImage)
