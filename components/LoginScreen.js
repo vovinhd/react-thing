@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage} from 'react-native'
 import {Button, Form, Input, Label, Text, Item as FormItem, Container, Header, Content, CheckBox} from "native-base";
 import Expo, {Constants} from "expo";
 import Api from "../network/api";

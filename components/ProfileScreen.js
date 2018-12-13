@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {AsyncStorage, View} from 'react-native';
-import {Button, Icon, Text} from "native-base";
-import Expo from "expo";
+import {AsyncStorage, View, StatusBar} from 'react-native';
+import { Container, Header, Content, Card, CardItem, Text, Body, Button, Icon } from "native-base";import Expo from "expo";
+import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import UploadImage from "./UploadImage";
 
 class ProfileScreen extends Component {
@@ -39,13 +39,25 @@ class ProfileScreen extends Component {
             return(<Expo.AppLoading/>)
         }
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text>ProfileScreen</Text>
-                <UploadImage/>
-                <Button full primary onPress={this._signOutAsync}>
-                    <Text>Sign Out!</Text>
-                </Button>
-            </View>
+            <Container>
+
+                <Header />
+                <Content padder>
+                    <Card transparent>
+                        <CardItem>
+                            <Body>
+                            <Text>ProfileScreen</Text>
+                            <UploadImage/>
+                            <Button full primary onPress={this._signOutAsync}>
+                                <Text>Sign Out!</Text>
+                            </Button>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                </Content>
+            </Container>
+
+
         );
     };
 

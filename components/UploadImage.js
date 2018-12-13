@@ -8,6 +8,7 @@ import { ImagePicker } from 'expo';
  class UploadImage extends React.Component  {
     state = {
         image: null,
+        media: null
     };
 
     _pickImage = async () => {
@@ -20,6 +21,7 @@ import { ImagePicker } from 'expo';
 
         if (!result.cancelled) {
 
+            const file_name = result.uri.split('\\').pop().split('/').pop();
             // TODO type and name
             const image = new ReactNativeFile({
                 uri: result.uri,
@@ -32,7 +34,15 @@ import { ImagePicker } from 'expo';
             this.props.mutate({
                 variables: {file: image},
             })
-                .then(media => console.log(media))
+                .then(media => {
+                    console.log(media);
+                    this.state.media = media;
+                    if(this.props.onUploadFinished) {
+                        this.props.onUploadFinished();
+                    } else {
+                        console.log(`[WARN] ${this.constructor.name}: No onUpladFinished callback set in properties`);
+                    }
+                })
                 .catch(err => console.error(err));
         }
     };

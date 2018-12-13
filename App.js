@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
+import { AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
+import { Container, Content, StyleProvider } from 'native-base';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import LoginScreen from "./components/LoginScreen";
 import ChallengeScreen from "./components/ChallengeScreen";
@@ -8,7 +9,8 @@ import ProfileScreen from "./components/ProfileScreen";
 import SignUpScreen from "./components/SignUpScreen";
 import CheckUserExistsScreen from "./components/CheckUserExistsScreen";
 import {Provider} from "react-redux";
-
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
 import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
 import FeedScreen from "./components/FeedScreen";
@@ -18,7 +20,9 @@ class Root extends Component {
     render() {
         return (
             <Provider store={store}>
-                <RootNavigation/>
+                <StyleProvider style={getTheme(material)}>
+                  <RootNavigation/>
+                </StyleProvider>
             </Provider>
         )
     }
@@ -43,7 +47,9 @@ class AuthLoadingScreen extends Component {
     }
 
     async _bootstrapAsync() {
+        console.log("Is logged in?");
         const userToken = await AsyncStorage.getItem('token');
+        console.log("Logged In");
         this.props.navigation.navigate(userToken ? 'App' : 'Auth');
     }
 

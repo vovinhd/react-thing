@@ -39,6 +39,7 @@
     "react-native": "~0.55.2",
     "react-native-elements": "^0.19.1",
     "react-native-fade-in-image": "^1.4.1",
+    "react-native-image-header-scroll-view": "^0.8.2",
     "react-navigation": "^2.6.2",
     "react-navigation-fluid-transitions": "^0.2.2",
     "react-navigation-material-bottom-tabs": "^0.3.0",
