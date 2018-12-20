@@ -1,0 +1,1 @@
+{"version":3,"file":"Right.js","sourceRoot":"","sources":["../../../src/native-base-theme/components/Right.js"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,uBAAuB,CAAC;AAE7C,eAAe,CAAC,SAAS,GAAG,QAAQ,EAAE,EAAE;IACvC,MAAM,UAAU,GAAG;QAClB,mBAAmB,EAAE;YACpB,SAAS,EAAE,IAAI;SACf;QACD,IAAI,EAAE,CAAC;QACP,SAAS,EAAE,QAAQ;QACnB,UAAU,EAAE,UAAU;KACtB,CAAC;IAEF,OAAO,UAAU,CAAC;AACnB,CAAC,CAAC"}

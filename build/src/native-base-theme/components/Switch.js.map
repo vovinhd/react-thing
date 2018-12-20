@@ -1,0 +1,1 @@
+{"version":3,"file":"Switch.js","sourceRoot":"","sources":["../../../../src/native-base-theme/components/Switch.js"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,uBAAuB,CAAC;AAE7C,eAAe,CAAC,SAAS,GAAG,QAAQ,EAAE,EAAE;IACtC,MAAM,WAAW,GAAG;QAClB,cAAc,EAAE,CAAC,CAAC;KACnB,CAAC;IAEF,OAAO,WAAW,CAAC;AACrB,CAAC,CAAC"}
