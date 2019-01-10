@@ -1,5 +1,4 @@
 import color from "color";
-
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
 const deviceHeight = Dimensions.get("window").height;
@@ -147,8 +146,8 @@ export default {
 
   // Header
   toolbarBtnColor: "#fff",
-  toolbarDefaultBg: "#3F51B5",
-  toolbarHeight: 56,
+  toolbarDefaultBg: "#3bb52e",
+  toolbarHeight: platform === "ios" ? 56 : 56 + 32,
   toolbarSearchIconSize: 23,
   toolbarInputColor: "#fff",
   searchBarHeight: platform === "ios" ? 30 : 40,

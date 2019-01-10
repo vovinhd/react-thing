@@ -77,10 +77,7 @@ class FeedWidget extends Component {
         this.state = { active: true, refreshing: false };
     }
     render() {
-        return (
-        // @ts-ignore
-        React.createElement(Container, { style: styles.fillparent },
-            "// @ts-ignore",
+        return (React.createElement(Container, { style: styles.fillparent },
             React.createElement(Content, { style: styles.fillparent },
                 React.createElement(Query, { query: LOAD_FEED }, ({ loading, error, data, refetch }) => {
                     if (loading)
@@ -148,9 +145,7 @@ class FeedScreen extends Component {
         if (this.state.loading) {
             return (React.createElement(Expo.AppLoading, null));
         }
-        return (
-        //@ts-ignore
-        React.createElement(Container, { style: styles.container },
+        return (React.createElement(Container, { style: styles.container },
             React.createElement(FeedNavigation, null)));
     }
 }

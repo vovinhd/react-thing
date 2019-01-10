@@ -108,9 +108,7 @@ class FeedWidget extends Component<IFeedScreenProps, IFeedWidgetState> {
 
     render() {
         return (
-            // @ts-ignore
             <Container style={styles.fillparent}>
-                // @ts-ignore
                 <Content style={styles.fillparent}>
                     <Query query={LOAD_FEED}>
                         {({loading, error, data, refetch}) => {
@@ -221,7 +219,6 @@ class FeedScreen extends Component<IFeedScreenProps, IFeedScreenState> {
             return (<Expo.AppLoading/>)
         }
         return (
-            //@ts-ignore
             <Container style={styles.container}>
                 <FeedNavigation/>
             </Container>

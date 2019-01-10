@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from 'react';
 import {AsyncStorage, StatusBar, StyleSheet, Text, View} from "react-native";
 
 interface IMyComponentProps {
