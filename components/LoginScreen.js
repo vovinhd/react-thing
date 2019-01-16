@@ -15,7 +15,7 @@ import {
     Content,
     CheckBox,
     Card,
-    CardItem
+    CardItem, Toast
 } from "native-base";
 import Expo, {Constants} from "expo";
 import Api from "../network/api";
@@ -32,7 +32,8 @@ class LoginScreen extends Component {
         this.state = {
             loading: true,
             email: '',
-            password: ''
+            password: '',
+            loginError: false,
         };
     }
 
@@ -62,7 +63,11 @@ class LoginScreen extends Component {
                 }
             },
             (err) => {
-                console.error(err);
+                console.log(err.response);
+                Toast.show({
+                    text: err.response.data,
+                });
+                this.setState({loginError: true})
             });
 
     };
@@ -105,15 +110,22 @@ class LoginScreen extends Component {
                                     </CardItem>
                                     <CardItem style={loginScreenStyles.loginCardItem}>
                                         <Form style={{flex: 1}}>
-                                            <Item regular fixedLabel style={loginScreenStyles.loginFormTextInput}>
-                                                <Label>Email</Label>
+                                            <Item regular
+                                                  style={loginScreenStyles.loginFormTextInput}
+                                                  error={this.state.loginError}
+                                            >
                                                 <Input name="email"
+                                                       placeholder="eMail"
                                                        onChangeText={(text) => this.setState({email: text})}
                                                        value={this.state.email}/>
                                             </Item>
-                                            <Item regular fixedLabel style={loginScreenStyles.loginFormTextInput}>
-                                                <Label>Passwort</Label>
+                                            <Item regular
+                                                  style={loginScreenStyles.loginFormTextInput}
+                                                  error={this.state.loginError}
+                                            >
                                                 <Input name="password"
+                                                       secureTextEntry={true}
+                                                       placeholder="Passwort"
                                                        onChangeText={(text) => this.setState({password: text})}
                                                        value={this.state.password}/>
                                             </Item>
@@ -121,23 +133,36 @@ class LoginScreen extends Component {
                                     </CardItem>
                                     <CardItem style={loginScreenStyles.loginCardItem}>
                                         <H3 style={{color: 'blue'}}
-                                            onPress={() => console.log(`${this.name}: register clicked!`)}>
+                                            onPress={() => {
+                                                console.log(`${this.constructor.name}: register clicked!`);
+                                                this.props.navigation.navigate('SignUpScreen', {email: this.state.email});
+                                            }}>
                                             Registrieren
                                         </H3>
                                         <H3>|</H3>
                                         <H3 style={{color: 'blue'}}
-                                            onPress={() => console.log(`${this.name}: forgot_password clicked!`)}>
+                                            onPress={() => {
+                                                console.log(`${this.constructor.name}: forgot_password clicked!`);
+                                                this.props.navigation.navigate('ForgotPasswordScreen', {email: this.state.email});
+
+                                            }}>
                                             Passwort vergessen?
                                         </H3>
                                     </CardItem>
                                     <CardItem style={loginScreenStyles.loginCardItem}>
                                         <Text style={{color: 'blue'}}
-                                              onPress={() => console.log(`${this.name}: eula clicked!`)}>
+                                              onPress={() => {
+                                                  console.log(`${this.constructor.name}: eula clicked!`);
+
+                                              }}>
                                             AGBs
                                         </Text>
                                         <Text>|</Text>
                                         <Text style={{color: 'blue'}}
-                                              onPress={() => console.log(`${this.name}: privacy clicked!`)}>
+                                              onPress={() => {
+                                                  console.log(`${this.constructor.name}: privacy clicked!`)
+
+                                              }}>
                                             Datenschutzerklärung
                                         </Text>
                                     </CardItem>
@@ -157,7 +182,7 @@ class LoginScreen extends Component {
 
 }
 
-const loginScreenStyles = StyleSheet.create({
+export const loginScreenStyles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
-import {Container, Content, StyleProvider} from 'native-base';
+import {Container, Content, StyleProvider, Root} from 'native-base';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import LoginScreen from "./components/LoginScreen";
 import ChallengeScreen from "./components/ChallengeScreen";
@@ -15,12 +15,16 @@ import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
 import FeedScreen from "./components/FeedScreen";
 import {LoggedInScreen} from "./components/LoggedInScreen";
-class Root extends Component {
+import {ForgotPasswordScreen} from "./components/ForgotPasswordScreen";
+
+class AppRoot extends Component {
     render() {
         return (
             <Provider store={store}>
                 <StyleProvider style={getTheme(material)}>
-                    <RootNavigation/>
+                    <Root>
+                        <RootNavigation/>
+                    </Root>
                 </StyleProvider>
             </Provider>
         )
@@ -73,6 +77,9 @@ const AuthNav = createStackNavigator({
         SignUpScreen: {
             screen: SignUpScreen
         },
+        ForgotPasswordScreen: {
+            screen: ForgotPasswordScreen
+        }
     },
     {
         headerMode: 'none',
@@ -90,7 +97,7 @@ const RootNavigation = createSwitchNavigator({
     initialRouteName: 'AuthLoading'
 });
 
-export default Root;
+export default AppRoot;
 
 const styles = StyleSheet.create({
     container: {
