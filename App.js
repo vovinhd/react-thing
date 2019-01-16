@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import { AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
-import { Container, Content, StyleProvider } from 'native-base';
+import {Container, Content, StyleProvider} from 'native-base';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import LoginScreen from "./components/LoginScreen";
 import ChallengeScreen from "./components/ChallengeScreen";
@@ -15,13 +15,12 @@ import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
 import FeedScreen from "./components/FeedScreen";
 import {LoggedInScreen} from "./components/LoggedInScreen";
-
 class Root extends Component {
     render() {
         return (
             <Provider store={store}>
                 <StyleProvider style={getTheme(material)}>
-                  <RootNavigation/>
+                    <RootNavigation/>
                 </StyleProvider>
             </Provider>
         )
@@ -64,7 +63,6 @@ class AuthLoadingScreen extends Component {
 }
 
 
-
 const AuthNav = createStackNavigator({
         CheckUserExistsScreen: {
             screen: CheckUserExistsScreen
@@ -81,7 +79,7 @@ const AuthNav = createStackNavigator({
         navigationOptions: {
             headerVisible: false,
         },
-        initialRouteName: 'CheckUserExistsScreen',
+        initialRouteName: 'LoginScreen',
     });
 
 const RootNavigation = createSwitchNavigator({

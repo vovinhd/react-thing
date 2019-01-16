@@ -12,6 +12,9 @@ import TreeScreen from "./TreeScreen";
 import {createUploadLink} from "apollo-upload-client";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context"
+import {StatusBar} from 'react-native'
+import {Container} from "native-base";
+
 const AppNav = createMaterialBottomTabNavigator({
         FeedTab: {
             screen: FeedScreen
@@ -65,7 +68,13 @@ export class LoggedInScreen extends React.Component {
     render() {
         return (
             <ApolloProvider client={client}>
-                <AppNav/>
+                <Container>
+                    <StatusBar
+                        backgroundColor="blue"
+                        barStyle="light-content"
+                    />
+                    <AppNav/>
+                </Container>
             </ApolloProvider>
         );
     }
