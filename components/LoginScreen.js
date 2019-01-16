@@ -91,7 +91,7 @@ class LoginScreen extends Component {
                     }}>
                     <View style={loginScreenStyles.container} contentContainerStyle={loginScreenStyles.row}>
                         <Grid style={{alignItems: 'flex-start'}}>
-                            <Row size={1}>
+                            <Row size={1} style={{margin: 10}}>
                                 <Image
                                     style={{flex: 1, height: undefined, width: undefined}}
                                     resizeMode="contain"
@@ -105,14 +105,13 @@ class LoginScreen extends Component {
                                     </CardItem>
                                     <CardItem style={loginScreenStyles.loginCardItem}>
                                         <Form style={{flex: 1}}>
-                                            <Item regular style={loginScreenStyles.loginFormTextInput}>
+                                            <Item regular fixedLabel style={loginScreenStyles.loginFormTextInput}>
                                                 <Label>Email</Label>
                                                 <Input name="email"
                                                        onChangeText={(text) => this.setState({email: text})}
                                                        value={this.state.email}/>
                                             </Item>
-
-                                            <Item regular style={loginScreenStyles.loginFormTextInput}>
+                                            <Item regular fixedLabel style={loginScreenStyles.loginFormTextInput}>
                                                 <Label>Passwort</Label>
                                                 <Input name="password"
                                                        onChangeText={(text) => this.setState({password: text})}
@@ -144,9 +143,9 @@ class LoginScreen extends Component {
                                     </CardItem>
                                 </Card>
                             </Row>
-                            <Row size={1}>
-                                <Button full primary style={{paddingBottom: 4}} onPress={() => this.signIn()}>
-                                    <Text> Next </Text>
+                            <Row size={1} style={loginScreenStyles.row}>
+                                <Button primary style={loginScreenStyles.loginButton} onPress={() => this.signIn()}>
+                                    <Text>Login</Text>
                                 </Button>
                             </Row>
                         </Grid>
@@ -164,9 +163,17 @@ const loginScreenStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
-        backgroundColor: 'rgba(255,0,255,1)'
+        backgroundColor: 'rgba(255,0,255,0)'
     },
-    row: {},
+    row: {
+        alignSelf: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255,0,255,0)'
+
+    },
     loginCard: {
         backgroundColor: 'rgba(230, 230, 230, 0.7)',
         alignItems: 'center',
@@ -184,6 +191,11 @@ const loginScreenStyles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, .8)',
         margin: 10,
     },
+    loginButton: {
+        backgroundColor: 'rgb(166,203,0)',
+        padding: '10%',
+        alignSelf: 'center',
+    }
 
 });
 
