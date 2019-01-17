@@ -13,7 +13,7 @@ import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import store from "./persistence/store"
 import TreeScreen from "./components/TreeScreen";
-import FeedScreen from "./components/FeedScreen";
+import FeedScreen from "./components/FeedView/FeedScreen";
 import {LoggedInScreen} from "./components/LoggedInScreen";
 import {ForgotPasswordScreen} from "./components/ForgotPasswordScreen";
 

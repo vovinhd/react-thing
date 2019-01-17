@@ -5,7 +5,7 @@ import {ApolloProvider} from "react-apollo";
 import {ApolloLink, concat} from 'apollo-link';
 import {RetryLink} from 'apollo-link-retry';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import FeedScreen from "./FeedScreen";
+import FeedScreen from "./FeedView/FeedScreen";
 import ChallengeScreen from "./ChallengeScreen";
 import ProfileScreen from "./ProfileScreen";
 import TreeScreen from "./TreeScreen";

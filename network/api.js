@@ -145,7 +145,6 @@ export default {
             if (verbose) console.log(res);
             onSuccess(res);
         }).catch((err) => {
-            if (verbose) console.log("GET to " + "/api/resetPassword", err)
             onError(err)
         })
     },

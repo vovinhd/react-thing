@@ -22,6 +22,7 @@ import {
 import {Image, View} from "react-native";
 import {Grid, Row} from "react-native-easy-grid";
 import {loginScreenStyles} from "./LoginScreen";
+import Api from "../network/api";
 
 export class ForgotPasswordScreen extends Component {
 
@@ -33,7 +34,12 @@ export class ForgotPasswordScreen extends Component {
     }
 
     resetPassword = () => {
-        if (this.state.email === '') return;
+        if (this.state.email === '') {
+            Toast.show({
+                text: err.response.data,
+            });
+            return;
+        }
         Api.requestPasswordReset(this.state.email,
             (res) => {
                 Toast.show({
@@ -42,10 +48,8 @@ export class ForgotPasswordScreen extends Component {
                 })
             },
             (err) => {
-                console.error(err);
                 Toast.show({
-                    text: 'STR_TOAST_PASSWD_RESET_ERROR',
-                    buttonText: 'Okay'
+                    text: err.response.data,
                 })
             });
     }
@@ -56,7 +60,7 @@ export class ForgotPasswordScreen extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent onClick={() => {
+                        <Button transparent onPress={() => {
                             this.props.navigation.navigate('LoginScreen', {email: this.state.email});
                         }}>
                             <Icon name='arrow-back'/>
@@ -99,7 +103,8 @@ export class ForgotPasswordScreen extends Component {
                                 </Card>
                             </Row>
                             <Row size={1} style={loginScreenStyles.row}>
-                                <Button primary style={loginScreenStyles.loginButton} onPress={() => this.signIn()}>
+                                <Button primary style={loginScreenStyles.loginButton}
+                                        onPress={() => this.resetPassword()}>
                                     <Text>Passwort zurücksetzen</Text>
                                 </Button>
                             </Row>
