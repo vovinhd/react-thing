@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Button, Card, CardItem, Container, Content, Fab, H1, Icon, Left, Right, Text, Thumbnail} from "native-base";
 import {Mutation, Query} from "react-apollo";
 import {LIKE_POST, LOAD_FEED, UNLIKE_POST} from "../../network/FeedGql";
-import Expo from "expo";
 import {FlatList, RefreshControl} from "react-native";
 import {defaultAvatar} from "./FeedScreen";
 import PostWidget from "./PostWidget";
@@ -71,17 +70,22 @@ export default class FeedWidget extends Component {
                        fetchPolicy="cache-and-network"
                 >
                     {({loading, error, data, refetch, fetchMore}) => {
-                        if (loading) return <Expo.AppLoading/>;
+                        let spinner;
+                        if (loading) {
+                            spinner = <Text>Loading...</Text>
+                        } else {
+                            spinner = <Text>More</Text>
+                        }
                         if (error) return <Text>`Error ${error.message}`</Text>;
                         return (
 
                             <Content refreshControl={<RefreshControl
-                                refreshing={this.state.refreshing}
+                                refreshing={this.state.refreshing || loading}
                                 onRefresh={() => refetch()}
                             />
                             }>
                                 <FlatList
-                                    data={data.paginatedPosts.page.edges}
+                                    data={data.paginatedPosts ? data.paginatedPosts.page.edges : []}
                                     keyExtractor={(item, index) => item.node.id.toString()}
                                     renderItem={({item}) => {
                                         const post = item.node;
@@ -142,7 +146,7 @@ export default class FeedWidget extends Component {
                                             });
                                         }
                                     })
-                                }}><Text>More</Text></Button>
+                                }}>{spinner}</Button>
                             </Content>
                         )
                     }
