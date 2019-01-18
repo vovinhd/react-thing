@@ -11,40 +11,41 @@ export default class FeedWidget extends Component {
     constructor(props) {
         super(props);
         this.state = {active: true, refreshing: false};
+        this.pageSize = props.pageSize || 10;
     }
 
-    cardMedia = (item) => {
-        if (item.ytId) {
+    cardMedia = (post) => {
+        if (post.ytId) {
             return (
                 <Text>TODO render yt embed here</Text>
             )
-        } else if (item.media) {
+        } else if (post.media) {
             return (
                 <Text>TODO render image here</Text>
             )
         }
     };
 
-    bodyPreview = (item) => {
-        if (!item.body) {
+    bodyPreview = (post) => {
+        if (!post.body) {
             return;
         }
-        let preview = item.body.length > 140
-            ? `${item.body.substr(0, 139)}...`
-            : item.body;
+        let preview = post.body.length > 140
+            ? `${post.body.substr(0, 139)}...`
+            : post.body;
         return (
             <Text>{preview}</Text>
         )
     };
 
-    renderLikesButton = (item) => {
-        if (item.currentUserLikedPost) {
+    renderLikesButton = (post) => {
+        if (post.currentUserLikedPost) {
             return (
                 <Mutation mutation={UNLIKE_POST}
-                          key={item.id}>
+                          key={post.id}>
                     {(unlikePost) => {
                         return (
-                            <LikesButton mutation={unlikePost} post={item}/>
+                            <LikesButton mutation={unlikePost} post={post}/>
                         )
                     }}
                 </Mutation>
@@ -52,10 +53,10 @@ export default class FeedWidget extends Component {
         } else {
             return (
                 <Mutation mutation={LIKE_POST}
-                          key={item.id}
+                          key={post.id}
                 >
                     {(likePost, {data}) => (
-                        <LikesButton mutation={likePost} post={item}/>
+                        <LikesButton mutation={likePost} post={post}/>
                     )}
                 </Mutation>
             )
@@ -65,8 +66,11 @@ export default class FeedWidget extends Component {
     render() {
         return (
             <Container>
-                <Query query={LOAD_FEED}>
-                    {({loading, error, data, refetch}) => {
+                <Query query={LOAD_FEED}
+                       variables={{page: {first: this.pageSize, after: ""}}}
+                       fetchPolicy="cache-and-network"
+                >
+                    {({loading, error, data, refetch, fetchMore}) => {
                         if (loading) return <Expo.AppLoading/>;
                         if (error) return <Text>`Error ${error.message}`</Text>;
                         return (
@@ -77,70 +81,92 @@ export default class FeedWidget extends Component {
                             />
                             }>
                                 <FlatList
-                                    data={data.posts}
-                                    keyExtractor={(item, index) => item.id.toString()}
-                                    renderItem={({item}) => (
-                                        <Card icon key={item.id}>
-                                            <CardItem>
-                                                <Left>
-                                                    <Button style={{backgroundColor: "rgba(0,0,0,0)"}}>
-                                                        <Thumbnail circular
-                                                                   source={{uri: item.author.avatar ? item.author.avatar.path : defaultAvatar}}/>
+                                    data={data.paginatedPosts.page.edges}
+                                    keyExtractor={(item, index) => item.node.id.toString()}
+                                    renderItem={({item}) => {
+                                        const post = item.node;
+                                        return (
+                                            <Card icon key={post.id}>
+                                                <CardItem>
+                                                    <Left>
+                                                        <Button style={{backgroundColor: "rgba(0,0,0,0)"}}>
+                                                            <Thumbnail circular
+                                                                       source={{uri: post.author.avatar ? post.author.avatar.path : defaultAvatar}}/>
+                                                        </Button>
+                                                    </Left>
+                                                </CardItem>
+                                                <CardItem>
+                                                    {this.cardMedia(post)}
+                                                </CardItem>
+                                                <CardItem>
+                                                    <H1>{post.title}</H1>
+                                                </CardItem>
+                                                <CardItem>
+                                                    {this.bodyPreview(post)}
+                                                </CardItem>
+                                                <CardItem>
+                                                    <Left>
+                                                        {this.renderLikesButton(post)}
+                                                    </Left>
+                                                    <Button transparent
+                                                            onPress={() => this.props.navigation.navigate('PostWidget', {postId: post.id})}>
+                                                        <Text>{post.commentCount} Kommentare</Text>
                                                     </Button>
-                                                </Left>
-                                            </CardItem>
-                                            <CardItem>
-                                                {this.cardMedia(item)}
-                                            </CardItem>
-                                            <CardItem>
-                                                <H1>{item.title}</H1>
-                                            </CardItem>
-                                            <CardItem>
-                                                {this.bodyPreview(item)}
-                                            </CardItem>
-                                            <CardItem>
-                                                <Left>
-                                                    {this.renderLikesButton(item)}
-                                                </Left>
-                                                <Button transparent
-                                                        onPress={() => this.props.navigation.navigate('PostWidget', {postId: item.id})}>
-                                                <Text>{item.commentCount} Kommentare</Text>
-                                            </Button>
-                                            <Right>
-                                                <Button icon transparent
-                                                        onPress={() => this.props.navigation.navigate('PostWidget', {postId: item.id})}>
-                                                <Icon name="ios-more" style={{ /* this is a choice */
-                                                    transform: [{rotate: '90deg'}]
-                                                }}/>
-                                            </Button>
-                                        </Right>
-                                        </CardItem>
-                                        </Card>)}
-                                        />
-                                        </Content>
-                                        )
+                                                    <Right>
+                                                        <Button icon transparent
+                                                                onPress={() => this.props.navigation.navigate('PostWidget', {postId: post.id})}>
+                                                            <Icon name="ios-more" style={{ /* this is a choice */
+                                                                transform: [{rotate: '90deg'}]
+                                                            }}/>
+                                                        </Button>
+                                                    </Right>
+                                                </CardItem>
+                                            </Card>)
                                     }
-                                }
-                            </Query>
-                        <Fab style={{backgroundColor: '#5067FF'}}
-                             position="bottomRight"
-                             onPress={() => this.props.navigation.navigate('NewPostWidget')}>
-                            <Icon name="share"/>
-                        </Fab>
-                    </Container>
-                    )
-                        ;
+                                    }
+                                />
+                                <Button full light onPress={() => {
+                                    const lastCursor = data.paginatedPosts.page.edges[data.paginatedPosts.page.edges.length-1].cursor;
+                                    console.log(lastCursor)
+                                    fetchMore({
+                                        variables: {
+                                            page: {
+                                                first: this.pageSize,
+                                                after: lastCursor
+                                            }
+                                        },
+                                        updateQuery: (prev, { fetchMoreResult }) => {
+                                            if (!fetchMoreResult) return prev;
+                                            return Object.assign(data.paginatedPosts.page, prev, {
+                                                edges: [...prev.paginatedPosts.page.edges, ...fetchMoreResult.paginatedPosts.page.edges]
+                                            });
+                                        }
+                                    })
+                                }}><Text>More</Text></Button>
+                            </Content>
+                        )
                     }
                     }
+                </Query>
+                <Fab style={{backgroundColor: '#5067FF'}}
+                     position="bottomRight"
+                     onPress={() => this.props.navigation.navigate('NewPostWidget')}>
+                    <Icon name="share"/>
+                </Fab>
+            </Container>
+        )
+            ;
+    }
+}
 
-                    const LikesButton = ({mutation, post}) => {
-                    return (
-                    <Button transparent
-                    onPress={async () => {
-                        await mutation({variables: {postId: post.id}});
-                    }}
-                    >
-                    <Text style={{color: post.currentUserLikedPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
-                    </Button>
-                    )
-                }
+const LikesButton = ({mutation, post}) => {
+    return (
+        <Button transparent
+                onPress={async () => {
+                    await mutation({variables: {postId: post.id}});
+                }}
+        >
+            <Text style={{color: post.currentUserLikedPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
+        </Button>
+    )
+}

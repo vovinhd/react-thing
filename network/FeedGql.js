@@ -2,18 +2,25 @@ import gql from 'graphql-tag'
 import {Mutation} from "react-apollo";
 
 export const LOAD_FEED = gql`
-    query {
-        posts {
-            id,
-            title,
-            author {
-                screenName, 
-                avatar {path}
-            },
-            body,
-            sentiment,
-            commentCount,
-            currentUserLikedPost
+    query FeedPage($page:ConnectionArgs!) {
+        paginatedPosts (connectionArgs:$page) {
+            page {
+                edges {
+                    node {
+                        id,
+                        title,
+                        author {
+                            screenName,
+                            avatar {path}
+                        },
+                        body,
+                        sentiment,
+                        commentCount,
+                        currentUserLikedPost
+                    },
+                    cursor
+                }
+            }
         }
     }
 `;
