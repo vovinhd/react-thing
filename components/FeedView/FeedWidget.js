@@ -37,30 +37,6 @@ export default class FeedWidget extends Component {
         )
     };
 
-    renderLikesButton = (post) => {
-        if (post.currentUserLikedPost) {
-            return (
-                <Mutation mutation={UNLIKE_POST}
-                          key={post.id}>
-                    {(unlikePost) => {
-                        return (
-                            <LikesButton mutation={unlikePost} post={post}/>
-                        )
-                    }}
-                </Mutation>
-            )
-        } else {
-            return (
-                <Mutation mutation={LIKE_POST}
-                          key={post.id}
-                >
-                    {(likePost, {data}) => (
-                        <LikesButton mutation={likePost} post={post}/>
-                    )}
-                </Mutation>
-            )
-        }
-    }
 
     render() {
         return (
@@ -110,7 +86,7 @@ export default class FeedWidget extends Component {
                                                 </CardItem>
                                                 <CardItem>
                                                     <Left>
-                                                        {this.renderLikesButton(post)}
+                                                        <LikeButton post={post}/>
                                                     </Left>
                                                     <Button transparent
                                                             onPress={() => this.props.navigation.navigate('PostWidget', {postId: post.id})}>
@@ -130,7 +106,7 @@ export default class FeedWidget extends Component {
                                     }
                                 />
                                 <Button full light onPress={() => {
-                                    const lastCursor = data.paginatedPosts.page.edges[data.paginatedPosts.page.edges.length-1].cursor;
+                                    const lastCursor = data.paginatedPosts.page.edges[data.paginatedPosts.page.edges.length - 1].cursor;
                                     console.log(lastCursor)
                                     fetchMore({
                                         variables: {
@@ -139,7 +115,7 @@ export default class FeedWidget extends Component {
                                                 after: lastCursor
                                             }
                                         },
-                                        updateQuery: (prev, { fetchMoreResult }) => {
+                                        updateQuery: (prev, {fetchMoreResult}) => {
                                             if (!fetchMoreResult) return prev;
                                             return Object.assign(data.paginatedPosts.page, prev, {
                                                 edges: [...prev.paginatedPosts.page.edges, ...fetchMoreResult.paginatedPosts.page.edges]
@@ -163,14 +139,40 @@ export default class FeedWidget extends Component {
     }
 }
 
-const LikesButton = ({mutation, post}) => {
-    return (
-        <Button transparent
-                onPress={async () => {
-                    await mutation({variables: {postId: post.id}});
-                }}
-        >
-            <Text style={{color: post.currentUserLikedPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
-        </Button>
-    )
+export class LikeButton extends Component {
+    likesButton = ({mutation, post}) => {
+        return (
+            <Button transparent
+                    onPress={async () => {
+                        await mutation({variables: {postId: post.id}});
+                    }}
+            >
+                <Text style={{color: post.currentUserLikedPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
+            </Button>
+        )
+    }
+
+    render() {
+        const post = this.props.post;
+        if (post.currentUserLikedPost) {
+            return (
+                <Mutation mutation={UNLIKE_POST}
+                          key={post.id}>
+                    {(unlikePost) => {
+                        return (this.likesButton({mutation: unlikePost, post: post}))
+                    }}
+                </Mutation>
+            )
+        } else {
+            return (
+                <Mutation mutation={LIKE_POST}
+                          key={post.id}
+                >
+                    {(likePost, {data}) => {
+                        return (this.likesButton({mutation: likePost, post: post}))
+                    }}
+                </Mutation>
+            )
+        }
+    }
 }

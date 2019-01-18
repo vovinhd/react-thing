@@ -31,20 +31,30 @@ export const LOAD_POST = gql`
             title,
             body,
             author {
-                screenName
+                screenName, avatar {path}
             },
+            sentiment,
+            dateCreated,
+            commentCount,
+            image {
+                id, path
+            },
+            ytId,
+            currentUserLikedPost,
             comments {
                 id,
                 author {
                     screenName
                 },
+                body,
                 children {
                     id
                 },
                 parent {
                     id
                 },
-                sentiment
+                sentiment,
+                dateCreated
             }
         }
     }
@@ -79,12 +89,18 @@ export const ADD_COMMENT = gql`
     mutation AddComment($body:String!, $postId:Int!, $parentId:Int) {
         addComment(comment: {body:$body, post:$postId, parent:$parentId}) {
             id,
+            author {
+                screenName
+            },
             body,
-            parent {id},
-            post {id},
-            author {screenName, avatar {path}},
-            dateCreated,
-            sentiment
+            children {
+                id
+            },
+            parent {
+                id
+            },
+            sentiment,
+            dateCreated
         }
     }
 `;
