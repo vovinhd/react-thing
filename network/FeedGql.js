@@ -1,5 +1,4 @@
 import gql from 'graphql-tag'
-import {Mutation} from "react-apollo";
 
 export const LOAD_FEED = gql`
     query FeedPage($page:ConnectionArgs!) {
@@ -74,4 +73,18 @@ export const UNLIKE_POST = gql`mutation unlike($postId:Int!){
         id,sentiment, currentUserLikedPost
     }
 }
+`;
+
+export const ADD_COMMENT = gql`
+    mutation AddComment($body:String!, $postId:Int!, $parentId:Int) {
+        addComment(comment: {body:$body, post:$postId, parent:$parentId}) {
+            id,
+            body,
+            parent {id},
+            post {id},
+            author {screenName, avatar {path}},
+            dateCreated,
+            sentiment
+        }
+    }
 `;
