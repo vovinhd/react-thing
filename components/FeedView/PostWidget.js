@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {
     Body,
@@ -8,9 +8,13 @@ import {
     CardItem,
     Container,
     Content,
+    Form,
     H1,
     Header,
     Icon,
+    Input,
+    Item,
+    Label,
     Left,
     Right,
     Text,
@@ -99,12 +103,9 @@ class AddCommentWidget extends Component {
         this.setState({modalVisible: true});
     }
 
-    cancelComment() {
-        this.setState({body: '', modalVisible: false});
-    }
 
     closeModal() {
-        this.setState({modalVisible: false});
+        this.setState({body: '', modalVisible: false});
     }
 
     render() {
@@ -153,7 +154,7 @@ class AddCommentWidget extends Component {
                                 <CardItem last style={{backgroundColor: 'rgba(0,0,0,0)', flexDirection: 'row'}}>
                                     <Left style={{width: 'auto', flex: 1}}>
                                         <Button transparent info onPress={() => {
-                                            this.cancelComment();
+                                            this.closeModal();
                                         }}>
                                             <Text> Abbrechen </Text>
 
@@ -219,14 +220,6 @@ class CommentTreeWidget extends Component {
         current.childComments.forEach(child => this._buildCommentTree(comments, child, recursionDepth - 1));
     };
 
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            commentTree: (this.buildCommentTree(props.comments))
-        }
-    }
-
     walkTree = (commentTree) => {
         let tree = commentTree.map(branch => this._walkTree(branch, 20))
         return tree;
@@ -246,7 +239,6 @@ class CommentTreeWidget extends Component {
                 {below}
             </View>
         )
-
     };
 
 
@@ -255,7 +247,7 @@ class CommentTreeWidget extends Component {
         //console.log(result);
         return (
             <View>
-                {this.walkTree(this.state.commentTree)}
+                {this.walkTree(this.buildCommentTree(this.props.comments))}
             </View>
         );
     }
@@ -287,16 +279,3 @@ const styles = StyleSheet.create({
         padding: 10
     }
 });
-
-/*
-      update={(cache, { data: { addComment } }) => {
-      const { post } = cache.readQuery({ query: LOAD_POST, variables: {postId: this.props.postId} });
-      console.log(`cache update ${post}`);
-      post.comments = {...post.comments, ...addComment};
-      cache.writeQuery({
-          id: this.props.postId,
-          query: LOAD_POST,
-          data: {post}
-      });
-  }}
- */
