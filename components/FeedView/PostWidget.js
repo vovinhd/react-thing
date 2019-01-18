@@ -77,10 +77,11 @@ export default class PostWidget extends Component {
                                         </CardItem>
                                         <CardItem last style={{flexDirection: 'row', flex: 1}}>
                                             <LikeButton post={data.post}/>
-                                            <AddCommentWidget postId={data.post.id} refetch={refetch}/>
+                                            <AddCommentWidget postId={data.post.id}/>
                                         </CardItem>
                                     </Card>
-                                    <CommentTreeWidget comments={data.post.comments}/>
+                                    <CommentTreeWidget comments={data.post.comments} postId={data.post.id}
+                                                       refetch={refetch}/>
 
                                 </Content>
 
@@ -103,9 +104,31 @@ class AddCommentWidget extends Component {
         this.setState({modalVisible: true});
     }
 
-
     closeModal() {
         this.setState({body: '', modalVisible: false});
+    }
+
+    renderButton() {
+        if (this.props.compact) {
+            return (
+                <Button transparent primary
+                        onPress={() => {
+                            this.setModalVisible();
+                        }}>
+                    <Icon name='md-chatbubbles'/>
+                </Button>
+            )
+        } else {
+            return (
+                <Button transparent primary
+                        onPress={() => {
+                            this.setModalVisible();
+                        }}>
+                    <Icon name='md-chatbubbles'/>
+                    <Text>Kommentieren</Text>
+                </Button>
+            )
+        }
     }
 
     render() {
@@ -163,6 +186,7 @@ class AddCommentWidget extends Component {
                                     <Right style={{width: 'auto', flex: 1}}>
                                         <Button transparent disabled={!this.state.body.length > 0}
                                                 onPress={async () => {
+                                                    this.closeModal();
                                                     await addComment({
                                                         variables: {
                                                             postId: this.props.postId,
@@ -170,8 +194,7 @@ class AddCommentWidget extends Component {
                                                             body: this.state.body
                                                         }
                                                     });
-                                                    this.props.refetch();
-                                                    this.closeModal();
+                                                    if (this.props.refetch) this.props.refetch()
                                                 }}>
                                             <Text> Kommentieren </Text>
                                         </Button>
@@ -181,13 +204,7 @@ class AddCommentWidget extends Component {
                         )}
                     </Mutation>
                 </Modal>
-                <Button transparent primary
-                        onPress={() => {
-                            this.setModalVisible();
-                        }}>
-                    <Icon name='md-chatbubbles'/>
-                    <Text>Kommentieren</Text>
-                </Button>
+                {this.renderButton()}
             </View>
         )
     }
@@ -229,13 +246,13 @@ class CommentTreeWidget extends Component {
         let below;
         if (currentNode.childComments && currentNode.childComments.length > 0 && recursionDepth >= 0) {
             below =
-                <View style={{marginLeft: 5}}>
+                <View style={{marginLeft: 15, borderLeftWidth: 1, borderLeftColor: '#68cdff', padding: 5}}>
                     {currentNode.childComments.map(branch => this._walkTree(branch, recursionDepth - 1))}
                 </View>
         }
         return (
-            <View key={currentNode.id}>
-                <CommentWidget comment={currentNode}/>
+            <View key={currentNode.id} style={{margin: 10}}>
+                <CommentWidget comment={currentNode} postId={this.props.postId} refetch={this.props.refetch}/>
                 {below}
             </View>
         )
@@ -258,7 +275,12 @@ class CommentTreeWidget extends Component {
 class CommentWidget extends Component {
     render() {
         return (
-            <Text>{this.props.comment.body}</Text>
+            <View style={{flexDirection: 'row'}}>
+                <Text>{this.props.comment.body}</Text>
+                <AddCommentWidget postId={this.props.postId} parentId={this.props.comment.id}
+                                  refetch={this.props.refetch} compact/>
+
+            </View>
         )
     }
 }
