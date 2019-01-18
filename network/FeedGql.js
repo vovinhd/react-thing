@@ -4,9 +4,16 @@ import {Mutation} from "react-apollo";
 export const LOAD_FEED = gql`
     query {
         posts {
-            id, title, author {
-                screenName, avatar {path}
-            }
+            id,
+            title,
+            author {
+                screenName, 
+                avatar {path}
+            },
+            body,
+            sentiment,
+            commentCount,
+            currentUserLikedPost
         }
     }
 `;
@@ -46,4 +53,18 @@ export const ADD_POST = gql`
             title, body
         }
     }
+`;
+
+export const LIKE_POST = gql`mutation like($postId:Int!){
+    likePost(postId:$postId){
+        id,sentiment, currentUserLikedPost
+    }
+}
+`;
+
+export const UNLIKE_POST = gql`mutation unlike($postId:Int!){
+    unlikePost(postId:$postId){
+        id,sentiment, currentUserLikedPost
+    }
+}
 `;
