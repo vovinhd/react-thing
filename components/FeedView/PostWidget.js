@@ -153,6 +153,20 @@ class AddCommentWidget extends Component {
                     }}>
                     <Mutation key={this.props.postId}
                               mutation={ADD_COMMENT}
+                              update={(cache, {data: {addComment}}) => {
+                                  const data = cache.readQuery({
+                                      query: LOAD_POST,
+                                      variables: {postId: this.props.postId}
+                                  });
+                                  console.log(data.post);
+                                  console.log(addComment);
+                                  data.post.comments.push(addComment);
+                                  cache.writeQuery({
+                                      id: this.props.postId,
+                                      query: LOAD_POST,
+                                      data
+                                  });
+                              }}
                     >
                         {(addComment, {data}) => (
                             <Card transparent style={styles.modalContent}>
@@ -204,8 +218,11 @@ class AddCommentWidget extends Component {
 
 class CommentTreeWidget extends Component {
 
+    sortComments = (a, b) => b.sentiment - a.sentiment;
+
     buildCommentTree = (comments) => {
         let tree = comments.filter((c) => !c.parent);
+        tree.sort(this.sortComments);
         let childComments = comments.filter((c) => c.parent);
 
         tree.forEach((branchRoot) => {
@@ -225,7 +242,7 @@ class CommentTreeWidget extends Component {
             })
         });
         if (!current.childComments) return;
-
+        current.childComments.sort(this.sortComments);
         current.childComments.forEach(child => this._buildCommentTree(comments, child, recursionDepth - 1));
     };
 
@@ -238,7 +255,7 @@ class CommentTreeWidget extends Component {
         let below;
         if (currentNode.childComments && currentNode.childComments.length > 0 && recursionDepth >= 0) {
             below =
-                <View style={{borderLeftWidth: 1, borderLeftColor: '#68cdff'}}>
+                <View style={styles.commentWidget}>
                     {currentNode.childComments.map(branch => this._walkTree(branch, recursionDepth - 1))}
                 </View>
         }
@@ -255,7 +272,7 @@ class CommentTreeWidget extends Component {
         //let result = this.walkTree(this.state.commentTree);
         //console.log(result);
         return (
-            <View>
+            <View style={{flex: 1, flexShrink: 0, alignItems: 'stretch', width: '100%'}}>
                 {this.walkTree(this.buildCommentTree(this.props.comments))}
             </View>
         );
@@ -308,17 +325,22 @@ class CommentWidget extends Component {
         let comment = this.props.comment;
         let displayedTime = moment(comment.dateCreated).fromNow();
         return (
-            <Card transparent style={styles.commentCard}>
-                <CardItem cardBody style={styles.commentCardText}>
+            <View style={styles.commentCard}>
+                <View style={styles.commentCardText}>
+                    <Text style={{
+                        fontSize: 10,
+                        fontStyle: 'italic'
+                    }}>{`Gepostet von ${comment.author.screenName} vor ${displayedTime}`}</Text>
+                </View>
+                <View style={styles.commentCardText}>
                     <Text>{comment.body}</Text>
-                </CardItem>
-                <CardItem cardBody style={styles.commentCardActions}>
-                    <Text>{`${displayedTime} von ${comment.author.screenName}`}</Text>
+                </View>
+                <View style={styles.commentCardActions}>
                     <this.LikeCommentButton comment={comment}/>
                     <AddCommentWidget postId={this.props.postId} parentId={comment.id}
                                       refetch={this.props.refetch} compact/>
-                </CardItem>
-            </Card>
+                </View>
+            </View>
         )
     }
 }
@@ -338,22 +360,48 @@ const styles = StyleSheet.create({
         flex: 0,
         padding: 10
     },
+    commentWidget: {
+        borderLeftWidth: 1,
+        marginLeft: 10,
+        marginRight: 0,
+        padding: 0,
+        borderLeftColor: '#68cdff',
+        backgroundColor: 'rgba(255,0,255,0)',
+        flex: 1,
+        alignSelf: 'stretch',
+        width: '100%',
+
+    },
     commentCard: {
+        marginLeft: 0,
+        marginRight: 0,
         margin: 0,
         padding: 0,
-        backgroundColor: 'rgba(255,255,0,1)',
+        flex: 1,
+        flexShrink: 0,
+        alignSelf: 'stretch',
+        backgroundColor: 'rgba(255,255,0,0)',
+        width: '100%',
+
     },
     commentCardText: {
-        backgroundColor: 'rgba(0,255,255,1)',
+        flex: 1,
+        marginLeft: 0,
+        marginRight: 0,
+        padding: 0,
+        backgroundColor: 'rgba(0,255,255,0)',
+        alignSelf: 'stretch',
 
     },
     commentCardActions: {
         margin: 0,
         padding: 0,
-
-        backgroundColor: 'rgba(255,0,255,1)',
+        alignSelf: 'stretch',
+        backgroundColor: 'rgba(255,0,255,0)',
         flexDirection: 'row',
         flex: 1,
-        alignItems: 'flex-start',
-    }
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        flexShrink: 0,
+    },
 });
