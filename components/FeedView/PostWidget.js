@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
+import moment from 'moment/min/moment-with-locales';
+import de from 'moment/locale/de';
 import {
     Body,
     Button,
@@ -22,9 +24,11 @@ import {
     Toast
 } from "native-base";
 import {Mutation, Query} from "react-apollo";
-import {ADD_COMMENT, LOAD_POST} from "../../network/FeedGql";
+import {ADD_COMMENT, LIKE_COMMENT, LOAD_POST, UNLIKE_COMMENT} from "../../network/FeedGql";
 import Expo from "expo";
 import {LikeButton} from "./FeedWidget";
+
+moment.locale('de');
 
 export default class PostWidget extends Component {
 
@@ -111,7 +115,9 @@ class AddCommentWidget extends Component {
     renderButton() {
         if (this.props.compact) {
             return (
-                <Button transparent primary
+                <Button transparent
+                        primary
+                        small
                         onPress={() => {
                             this.setModalVisible();
                         }}>
@@ -147,20 +153,6 @@ class AddCommentWidget extends Component {
                     }}>
                     <Mutation key={this.props.postId}
                               mutation={ADD_COMMENT}
-                              update={(cache, {data: {addComment}}) => {
-                                  const data = cache.readQuery({
-                                      query: LOAD_POST,
-                                      variables: {postId: this.props.postId}
-                                  });
-                                  console.log(data.post);
-                                  console.log(addComment);
-                                  data.post.comments.push(addComment);
-                                  cache.writeQuery({
-                                      id: this.props.postId,
-                                      query: LOAD_POST,
-                                      data
-                                  });
-                              }}
                     >
                         {(addComment, {data}) => (
                             <Card transparent style={styles.modalContent}>
@@ -246,7 +238,7 @@ class CommentTreeWidget extends Component {
         let below;
         if (currentNode.childComments && currentNode.childComments.length > 0 && recursionDepth >= 0) {
             below =
-                <View style={{marginLeft: 15, borderLeftWidth: 1, borderLeftColor: '#68cdff', padding: 5}}>
+                <View style={{borderLeftWidth: 1, borderLeftColor: '#68cdff'}}>
                     {currentNode.childComments.map(branch => this._walkTree(branch, recursionDepth - 1))}
                 </View>
         }
@@ -273,14 +265,60 @@ class CommentTreeWidget extends Component {
 }
 
 class CommentWidget extends Component {
-    render() {
-        return (
-            <View style={{flexDirection: 'row'}}>
-                <Text>{this.props.comment.body}</Text>
-                <AddCommentWidget postId={this.props.postId} parentId={this.props.comment.id}
-                                  refetch={this.props.refetch} compact/>
+    LikeCommentButton = ({comment}) => {
+        if (comment.currentUserLikesComment) {
+            return (
+                <Mutation mutation={UNLIKE_COMMENT}
+                          key={comment.id}>
+                    {(unlikeComment) => {
+                        return (<Button transparent small
+                                        onPress={async () => {
+                                            await unlikeComment({variables: {commentId: comment.id}});
+                                        }}
+                            >
+                                <Text style={{color: '#f00'}}>{comment.sentiment}</Text>
+                                <Icon style={{color: '#f00'}} name="ios-heart"/>
+                            </Button>
+                        )
+                    }}
+                </Mutation>
+            )
+        } else {
+            return (
+                <Mutation mutation={LIKE_COMMENT}
+                          key={comment.id}>
+                    {(likeComment) => {
+                        return (<Button transparent small
+                                        onPress={async () => {
+                                            await likeComment({variables: {commentId: comment.id}});
+                                        }}
+                            >
+                                <Text style={{color: '#000'}}>{comment.sentiment}</Text>
+                                <Icon style={{color: '#000'}} name="ios-heart-outline"/>
+                            </Button>
+                        )
+                    }}
+                </Mutation>
 
-            </View>
+            )
+        }
+    }
+
+    render() {
+        let comment = this.props.comment;
+        let displayedTime = moment(comment.dateCreated).fromNow();
+        return (
+            <Card transparent style={styles.commentCard}>
+                <CardItem cardBody style={styles.commentCardText}>
+                    <Text>{comment.body}</Text>
+                </CardItem>
+                <CardItem cardBody style={styles.commentCardActions}>
+                    <Text>{`${displayedTime} von ${comment.author.screenName}`}</Text>
+                    <this.LikeCommentButton comment={comment}/>
+                    <AddCommentWidget postId={this.props.postId} parentId={comment.id}
+                                      refetch={this.props.refetch} compact/>
+                </CardItem>
+            </Card>
         )
     }
 }
@@ -299,5 +337,23 @@ const styles = StyleSheet.create({
         height: 'auto',
         flex: 0,
         padding: 10
+    },
+    commentCard: {
+        margin: 0,
+        padding: 0,
+        backgroundColor: 'rgba(255,255,0,1)',
+    },
+    commentCardText: {
+        backgroundColor: 'rgba(0,255,255,1)',
+
+    },
+    commentCardActions: {
+        margin: 0,
+        padding: 0,
+
+        backgroundColor: 'rgba(255,0,255,1)',
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'flex-start',
     }
 });

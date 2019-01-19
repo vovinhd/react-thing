@@ -147,14 +147,14 @@ export class LikeButton extends Component {
                         await mutation({variables: {postId: post.id}});
                     }}
             >
-                <Text style={{color: post.currentUserLikedPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
+                <Text style={{color: post.currentUserLikesPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
             </Button>
         )
     }
 
     render() {
         const post = this.props.post;
-        if (post.currentUserLikedPost) {
+        if (post.currentUserLikesPost) {
             return (
                 <Mutation mutation={UNLIKE_POST}
                           key={post.id}>

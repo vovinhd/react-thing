@@ -15,7 +15,7 @@ export const LOAD_FEED = gql`
                         body,
                         sentiment,
                         commentCount,
-                        currentUserLikedPost
+                        currentUserLikesPost
                     },
                     cursor
                 }
@@ -40,7 +40,7 @@ export const LOAD_POST = gql`
                 id, path
             },
             ytId,
-            currentUserLikedPost,
+            currentUserLikesPost,
             comments {
                 id,
                 author {
@@ -54,7 +54,8 @@ export const LOAD_POST = gql`
                     id
                 },
                 sentiment,
-                dateCreated
+                dateCreated,
+                currentUserLikesComment
             }
         }
     }
@@ -73,14 +74,28 @@ export const ADD_POST = gql`
 
 export const LIKE_POST = gql`mutation like($postId:Int!){
     likePost(postId:$postId){
-        id,sentiment, currentUserLikedPost
+        id,sentiment, currentUserLikesPost
     }
 }
 `;
 
 export const UNLIKE_POST = gql`mutation unlike($postId:Int!){
     unlikePost(postId:$postId){
-        id,sentiment, currentUserLikedPost
+        id,sentiment, currentUserLikesPost
+    }
+}
+`;
+
+export const LIKE_COMMENT = gql`mutation likeComment($commentId:Int!){
+    likeComment(commentId:$commentId){
+        id,sentiment, currentUserLikesComment
+    }
+}
+`;
+
+export const UNLIKE_COMMENT = gql`mutation unlikeComment($commentId:Int!){
+    unlikeComment(commentId:$commentId){
+        id,sentiment, currentUserLikesComment
     }
 }
 `;
@@ -100,7 +115,8 @@ export const ADD_COMMENT = gql`
                 id
             },
             sentiment,
-            dateCreated
+            dateCreated,
+            currentUserLikesComment
         }
     }
 `;
