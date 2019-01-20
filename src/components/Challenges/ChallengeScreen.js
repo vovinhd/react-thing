@@ -1,8 +1,8 @@
 import React from 'react';
 import {Container, Icon} from 'native-base';
-import {SeasonPlanComponent} from "./SeasonView/SeasonPlanComponent";
-import {SeasonComponent} from "./SeasonView/SeasonComponent";
-import {HistoryComponent} from "./SeasonView/HistoryComponent";
+import {SeasonPlanComponent} from "./SeasonPlanComponent";
+import {SeasonComponent} from "./SeasonComponent";
+import {HistoryComponent} from "./HistoryComponent";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 
 const ChallengeViewsNav = createMaterialBottomTabNavigator(

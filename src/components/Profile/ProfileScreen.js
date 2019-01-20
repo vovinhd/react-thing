@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {AsyncStorage} from 'react-native';
 import {Body, Button, Card, CardItem, Container, Content, Footer, Header, Icon, Text} from "native-base";
 import Expo from "expo";
-import UploadImage from "./UploadImage";
+import UploadImage from "../UploadImage";
 
 class ProfileScreen extends Component {
 
@@ -31,7 +31,14 @@ class ProfileScreen extends Component {
         await AsyncStorage.removeItem('uId');
         await AsyncStorage.removeItem('token');
         console.log("signed out");
-        this.props.navigation.navigate('Auth');
+        console.log(this.props.navigation);
+        this.props.navigation.dispatch({
+            type: 'Navigation/NAVIGATE', routeName: 'RootNavigation', action: {
+                type: 'Navigation/NAVIGATE',
+                routeName: 'Auth'
+            }
+        });
+        //this.props.navigation.navigate('Auth');
     };
 
     render() {

@@ -209,7 +209,7 @@ export default class App extends React.Component {
                         transform: [{ rotateZ: rot + 'rad' }],
                     },
                 ]}
-                source={require('../../assets/tree.png')}
+                source={require('../../../assets/tree.png')}
             />
         );
     };
@@ -232,7 +232,7 @@ export default class App extends React.Component {
                            transform: [{ rotateZ: rot + 'deg' }],
                        },
                    ]}
-                   source={require('../../assets/leaf.png')}
+                   source={require('../../../assets/leaf.png')}
             />
         );
 
