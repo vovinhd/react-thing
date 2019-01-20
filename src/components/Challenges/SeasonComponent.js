@@ -4,9 +4,9 @@ import {Text} from "react-native";
 
 export class SeasonComponent extends Component {
     static navigationOptions = {
-        title: 'Woche',
+        title: 'Season',
         tabBarIcon: ({focused, tintColor}) => (
-            <Icon name='star' style={{fontSize: 20, color: tintColor}}/>
+            <Icon name='image' style={{fontSize: 20, color: tintColor}}/>
         ),
     };
 

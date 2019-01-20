@@ -22,7 +22,7 @@ import {
 import {Image, StyleSheet, View} from "react-native";
 import Modal from "react-native-modal";
 import {Mutation} from "react-apollo";
-import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_POST} from "../../network/FeedGql";
+import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_POST} from "../../network/Feed.gql";
 import moment from 'moment/min/moment-with-locales';
 import de from 'moment/locale/de';
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Text} from "native-base";
 import {Query} from "react-apollo";
-import {LOAD_POST} from "../../network/FeedGql";
+import {LOAD_POST} from "../../network/Feed.gql";
 import Expo from "expo";
 import PostCard from "./PostComponent"
 

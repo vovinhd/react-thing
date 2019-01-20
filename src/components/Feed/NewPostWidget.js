@@ -17,7 +17,7 @@ import {
     Title
 } from "native-base";
 import {Mutation} from "react-apollo";
-import {ADD_POST} from "../../network/FeedGql";
+import {ADD_POST} from "../../network/Feed.gql";
 import UploadImage from "../UploadImage";
 
 export default class NewPostWidget extends Component {

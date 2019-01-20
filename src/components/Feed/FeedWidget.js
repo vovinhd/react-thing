@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Body, Button, Container, Content, Fab, Header, Icon, Left, Right, Text, Title} from "native-base";
 import {Query} from "react-apollo";
-import {LOAD_FEED} from "../../network/FeedGql";
+import {LOAD_FEED} from "../../network/Feed.gql";
 import {FlatList, RefreshControl} from "react-native";
 import PostWidget from "./PostScreen";
 import * as Constants from "expo";

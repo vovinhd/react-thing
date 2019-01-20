@@ -4,6 +4,7 @@ import {SeasonPlanComponent} from "./SeasonPlanComponent";
 import {SeasonComponent} from "./SeasonComponent";
 import {HistoryComponent} from "./HistoryComponent";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
+import material from "../../../native-base-theme/variables/material";
 
 const ChallengeViewsNav = createMaterialBottomTabNavigator(
     {
@@ -16,7 +17,9 @@ const ChallengeViewsNav = createMaterialBottomTabNavigator(
         History: {
             screen: HistoryComponent
         }
-    }, {}
+    }, {
+        barStyle: {backgroundColor: material.tabBgColor},
+    }
 )
 
 class ChallengeScreen extends React.Component {
