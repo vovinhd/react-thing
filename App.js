@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
 import {Root, StyleProvider} from 'native-base';
-import LoginScreen from "./components/PreLogin/LoginScreen";
-import SignUpScreen from "./components/PreLogin/SignUpScreen";
-import CheckUserExistsScreen from "./components/PreLogin/CheckUserExistsScreen";
+import LoginScreen from "./src/components/PreLogin/LoginScreen";
+import SignUpScreen from "./src/components/PreLogin/SignUpScreen";
+import CheckUserExistsScreen from "./src/components/PreLogin/CheckUserExistsScreen";
 import {Provider} from "react-redux";
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
-import store from "./persistence/store"
-import {LoggedInScreen} from "./components/LoggedInScreen";
-import {ForgotPasswordScreen} from "./components/PreLogin/ForgotPasswordScreen";
+import store from "./src/persistence/store"
+import {LoggedInScreen} from "./src/components/LoggedInScreen";
+import {ForgotPasswordScreen} from "./src/components/PreLogin/ForgotPasswordScreen";
 
 class AppRoot extends Component {
     render() {

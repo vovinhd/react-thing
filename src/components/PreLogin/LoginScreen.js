@@ -84,7 +84,7 @@ class LoginScreen extends Component {
                                 <Image
                                     style={{flex: 1, height: undefined, width: undefined}}
                                     resizeMode="contain"
-                                    source={require('../../assets/KlimafuchsLogo.png')}
+                                    source={require('../../../assets/KlimafuchsLogo.png')}
                                 />
                             </Row>
                             <Row size={2}>

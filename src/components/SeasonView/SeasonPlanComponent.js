@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Icon, Header, Body, Left, Right, Text, Title} from 'native-base';
+import {Body, Container, Header, Icon, Left, Right, Text, Title} from 'native-base';
 import * as Constants from "expo";
 
 export class SeasonPlanComponent extends Component {

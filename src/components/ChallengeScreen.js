@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge} from 'native-base';
+import {Container, Icon} from 'native-base';
 import {SeasonPlanComponent} from "./SeasonView/SeasonPlanComponent";
 import {SeasonComponent} from "./SeasonView/SeasonComponent";
 import {HistoryComponent} from "./SeasonView/HistoryComponent";

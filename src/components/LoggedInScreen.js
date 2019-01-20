@@ -1,9 +1,8 @@
 import React from 'react';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, StatusBar} from 'react-native';
 import ApolloClient from "apollo-client";
 import {ApolloProvider} from "react-apollo";
-import {ApolloLink, concat} from 'apollo-link';
-import {RetryLink} from 'apollo-link-retry';
+import {concat} from 'apollo-link';
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import FeedScreen from "./FeedView/FeedScreen";
 import ChallengeScreen from "./ChallengeScreen";
@@ -11,8 +10,7 @@ import ProfileScreen from "./ProfileScreen";
 import TreeScreen from "./TreeScreen";
 import {createUploadLink} from "apollo-upload-client";
 import {InMemoryCache} from "apollo-cache-inmemory";
-import { setContext } from "apollo-link-context"
-import {StatusBar} from 'react-native'
+import {setContext} from "apollo-link-context"
 import {Container} from "native-base";
 
 const AppNav = createMaterialBottomTabNavigator({

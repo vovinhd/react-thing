@@ -1,8 +1,4 @@
-import {
-    CHECK_EMAIL_EXISTS,
-    REGISTER,
-    LOGIN
-} from "./types";
+import {CHECK_EMAIL_EXISTS} from "./types";
 
 export function checkEmailExists () {
     return {

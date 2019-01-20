@@ -1,8 +1,4 @@
-import {
-    CHECK_EMAIL_EXISTS,
-    LOGIN,
-    REGISTER
-} from "../actions/types";
+import {CHECK_EMAIL_EXISTS, LOGIN, REGISTER} from "../actions/types";
 
 const token = async() => await AsyncStorage.getItem('token');
 

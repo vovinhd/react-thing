@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Button } from 'react-native';
+import {Button, Image, StyleSheet, Text, View} from 'react-native';
 import FadeIn from 'react-native-fade-in-image';
 import {Icon} from "native-base";
 // You can import from local files
@@ -209,7 +209,7 @@ export default class App extends React.Component {
                         transform: [{ rotateZ: rot + 'rad' }],
                     },
                 ]}
-                source={require('../assets/tree.png')}
+                source={require('../../assets/tree.png')}
             />
         );
     };
@@ -232,7 +232,7 @@ export default class App extends React.Component {
                            transform: [{ rotateZ: rot + 'deg' }],
                        },
                    ]}
-                   source={require('../assets/leaf.png')}
+                   source={require('../../assets/leaf.png')}
             />
         );
 
