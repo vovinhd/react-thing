@@ -36,11 +36,6 @@ export default class FeedWidget extends Component {
                             spinner = <Text>More</Text>
                         }
                         if (error) return <Text>`Error ${error.message}`</Text>;
-                        let pageData = data.paginatedPosts ? data.paginatedPosts.pageData : {};
-                        console.log(pageData);
-                        if (pageData && pageData.count < pageData.limit) {
-                            this.setState({endReached: true})
-                        }
                         return (
 
                             <Content refreshControl={<RefreshControl
@@ -62,9 +57,11 @@ export default class FeedWidget extends Component {
                                     }
                                     }
                                 />
-                                {this.state.endReached
-                                    ? <Text>Keine weiteren Einträge</Text>
-                                    : <Button full light onPress={() => {
+                                {data.paginatedPosts && this.state.endReached
+                                    ? <Button full light disabled>
+                                        <Text>Keine weiteren Einträge</Text>
+                                    </Button>
+                                    : <Button full light disabled={loading} onPress={() => {
                                         const lastCursor = data.paginatedPosts.page.edges[data.paginatedPosts.page.edges.length - 1].cursor;
                                         console.log(lastCursor)
                                         fetchMore({
@@ -76,6 +73,10 @@ export default class FeedWidget extends Component {
                                             },
                                             updateQuery: (prev, {fetchMoreResult}) => {
                                                 if (!fetchMoreResult) return prev;
+                                                if (fetchMoreResult.paginatedPosts.page.edges.length === 0) {
+                                                    console.log("no more data");
+                                                    this.setState({endReached: true})
+                                                }
                                                 return Object.assign(data.paginatedPosts.page, prev, {
                                                     edges: [...prev.paginatedPosts.page.edges, ...fetchMoreResult.paginatedPosts.page.edges]
                                                 });

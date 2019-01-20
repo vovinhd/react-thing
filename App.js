@@ -1,21 +1,16 @@
 import React, {Component} from 'react';
 import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
-import {Container, Content, StyleProvider, Root} from 'native-base';
-import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
-import LoginScreen from "./components/LoginScreen";
-import ChallengeScreen from "./components/ChallengeScreen";
-import ProfileScreen from "./components/ProfileScreen";
-import SignUpScreen from "./components/SignUpScreen";
-import CheckUserExistsScreen from "./components/CheckUserExistsScreen";
+import {Root, StyleProvider} from 'native-base';
+import LoginScreen from "./components/PreLogin/LoginScreen";
+import SignUpScreen from "./components/PreLogin/SignUpScreen";
+import CheckUserExistsScreen from "./components/PreLogin/CheckUserExistsScreen";
 import {Provider} from "react-redux";
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import store from "./persistence/store"
-import TreeScreen from "./components/TreeScreen";
-import FeedScreen from "./components/FeedView/FeedScreen";
 import {LoggedInScreen} from "./components/LoggedInScreen";
-import {ForgotPasswordScreen} from "./components/ForgotPasswordScreen";
+import {ForgotPasswordScreen} from "./components/PreLogin/ForgotPasswordScreen";
 
 class AppRoot extends Component {
     render() {

@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import {AsyncStorage} from 'react-native';
 import {Button, Container, Form, Input, Item as FormItem, Label, Text,} from 'native-base';
 import Expo, {Constants} from "expo";
-import Provider from "react-redux";
-import Api from "../network/api";
+import Api from "../../network/api";
 
 class CheckUserExistsScreen extends Component {
 

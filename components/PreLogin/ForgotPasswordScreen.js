@@ -1,28 +1,26 @@
 import React, {Component} from 'react'
-import Expo, {LinearGradient} from "expo";
+import {LinearGradient} from "expo";
 import {
+    Body,
     Button,
     Card,
     CardItem,
     Container,
     Form,
     H1,
-    H3,
+    Header,
+    Icon,
     Input,
     Item,
-    Label,
-    Text,
-    Toast,
-    Header,
     Left,
     Right,
-    Body,
-    Icon
+    Text,
+    Toast
 } from "native-base";
-import {Image, View} from "react-native";
+import {View} from "react-native";
 import {Grid, Row} from "react-native-easy-grid";
 import {loginScreenStyles} from "./LoginScreen";
-import Api from "../network/api";
+import Api from "../../network/api";
 
 export class ForgotPasswordScreen extends Component {
 

@@ -1,25 +1,9 @@
 import React, {Component} from 'react';
 import {AsyncStorage, Image, StyleSheet, View} from 'react-native'
-import {Col, Row, Grid} from "react-native-easy-grid";
-import {
-    Button,
-    Body,
-    Form,
-    Input,
-    Label,
-    Text,
-    Item,
-    Container,
-    H1, H2, H3,
-    Header,
-    Content,
-    CheckBox,
-    Card,
-    CardItem, Toast
-} from "native-base";
-import Expo, {Constants} from "expo";
-import Api from "../network/api";
-import {LinearGradient} from 'expo';
+import {Grid, Row} from "react-native-easy-grid";
+import {Button, Card, CardItem, Container, Form, H1, H3, Input, Item, Text, Toast} from "native-base";
+import Expo, {LinearGradient} from "expo";
+import Api from "../../network/api";
 
 class LoginScreen extends Component {
 
@@ -100,7 +84,7 @@ class LoginScreen extends Component {
                                 <Image
                                     style={{flex: 1, height: undefined, width: undefined}}
                                     resizeMode="contain"
-                                    source={require('../assets/KlimafuchsLogo.png')}
+                                    source={require('../../assets/KlimafuchsLogo.png')}
                                 />
                             </Row>
                             <Row size={2}>

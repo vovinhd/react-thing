@@ -27,7 +27,8 @@ export const LOAD_FEED = gql`
             },
             pageData {
                 count,
-                limit
+                limit,
+                offset
             }
         }
     }
