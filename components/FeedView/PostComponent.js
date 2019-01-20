@@ -1,8 +1,4 @@
 import React, {Component} from 'react';
-import {Image, StyleSheet, View} from "react-native";
-import Modal from 'react-native-modal';
-import moment from 'moment/min/moment-with-locales';
-import de from 'moment/locale/de';
 import {
     Body,
     Button,
@@ -23,91 +19,90 @@ import {
     Title,
     Toast
 } from "native-base";
-import {Mutation, Query} from "react-apollo";
-import {ADD_COMMENT, LIKE_COMMENT, LOAD_POST, UNLIKE_COMMENT} from "../../network/FeedGql";
-import Expo from "expo";
+import {Image, StyleSheet, View} from "react-native";
 import {LikeButton} from "./FeedWidget";
+import Modal from "react-native-modal";
+import {Mutation} from "react-apollo";
+import {ADD_COMMENT, LIKE_COMMENT, LOAD_POST, UNLIKE_COMMENT} from "../../network/FeedGql";
+import moment from 'moment/min/moment-with-locales';
+import de from 'moment/locale/de';
 
 moment.locale('de');
 
-export default class PostWidget extends Component {
 
-    cardMedia = (post) => {
-
-        if (post.ytId) {
-            return (
-                <Text>TODO render yt embed here</Text>
-            )
-        } else if (post.image) {
-            const url = `${process.env.API_IMG_URL}${post.image.filename}`;
-            console.log(url)
-            return (
-                <View>
-                    <Image
-                        style={{width: '100%', height: 400}}
-                        source={{uri: url}}
-                        resizeMode="cover"
-                    />
-                    <Text>{process.env.API_IMG_URL}{post.image.filename}</Text>
-                </View>
-            )
-        }
-    };
-
-    render() {
-        return (
-            <Container>
-                <Query query={LOAD_POST} variables={{postId: this.props.navigation.getParam('postId')}}>
-                    {({loading, error, data, refetch}) => {
-                        console.log(process.env.API_IMG_URL)
-                        console.log(data.post);
-                        if (loading) return <Expo.AppLoading/>;
-                        if (error) {
-                            console.log(error);
-                            return <Text>`Error ${error.message}`</Text>;
-                        }
-                        return (
-                            <Container>
-                                <Header>
-                                    <Left>
-                                        <Button transparent
-                                                onPress={() => this.props.navigation.navigate('FeedWidget')}>
-                                            <Icon name='arrow-back'/>
-                                        </Button>
-                                    </Left>
-                                    <Body>
-                                    <Title>{data.post.title}</Title>
-                                    </Body>
-                                    <Right/>
-                                </Header>
-                                <Content>
-                                    <Card>
-                                        <CardItem>
-                                            {this.cardMedia(data.post)}
-                                        </CardItem>
-                                        <CardItem>
-                                            <H1>{data.post.title}</H1>
-                                        </CardItem>
-                                        <CardItem>
-                                            <Text>{data.post.body}</Text>
-                                        </CardItem>
-                                        <CardItem last style={{flexDirection: 'row', flex: 1}}>
-                                            <LikeButton post={data.post}/>
-                                            <AddCommentWidget postId={data.post.id}/>
-                                        </CardItem>
-                                    </Card>
-                                    <CommentTreeWidget comments={data.post.comments} postId={data.post.id}
-                                                       refetch={refetch}/>
-
-                                </Content>
-
-                            </Container>
-                        )
-                    }}
-                </Query>
-            </Container>
-        );
+export default PostComponent = ({post, navigateToDetailedView, commentRefetch, close}) => {
+    let cardMedia, header, cardFooter, commentSection;
+    if (post.ytId) {
+        cardMedia = <Text>TODO render yt embed here</Text>
+    } else if (post.image) {
+        const url = `${process.env.API_IMG_URL}${post.image.filename}`;
+        console.log(url)
+        cardMedia = <View style={{flex: 1, width: '100%'}}>
+            <Image
+                style={{width: '100%', height: 400}}
+                source={{uri: url}}
+                resizeMode="cover"
+            />
+        </View>
     }
+    if (navigateToDetailedView) {
+        cardFooter = <CardItem>
+            <Left>
+                <LikeButton post={post}/>
+            </Left>
+            <Button transparent
+                    onPress={navigateToDetailedView}>
+                <Text>{post.commentCount} Kommentare</Text>
+            </Button>
+            <Right>
+                <Button icon transparent
+                        onPress={navigateToDetailedView}>
+                    <Icon name="ios-more" style={{ /* this is a choice */
+                        transform: [{rotate: '90deg'}]
+                    }}/>
+                </Button>
+            </Right>
+        </CardItem>
+    } else {
+        cardFooter = <CardItem last style={{flexDirection: 'row', flex: 1}}>
+            <LikeButton post={post}/>
+            <AddCommentWidget postId={post.id}/>
+        </CardItem>
+    }
+    return (
+        <Container>
+            {close && <Header>
+                <Left>
+                    <Button transparent
+                            onPress={close}>
+                        <Icon name='arrow-back'/>
+                    </Button>
+                </Left>
+                <Body>
+                <Title>{post.title}</Title>
+                </Body>
+                <Right/>
+            </Header>
+            }
+            <Content>
+                <Card>
+                    <CardItem>
+                        {cardMedia}
+                    </CardItem>
+                    <CardItem>
+                        <H1>{post.title}</H1>
+                    </CardItem>
+                    <CardItem>
+                        <Text>{post.body}</Text>
+                    </CardItem>
+                    {cardFooter}
+                </Card>
+                {commentRefetch && <CommentTreeWidget comments={post.comments} postId={post.id}
+                                                      refetch={commentRefetch}/>}
+            </Content>
+
+        </Container>
+    )
 }
 
 class AddCommentWidget extends Component {
@@ -342,7 +337,7 @@ class CommentWidget extends Component {
                     <Text style={{
                         fontSize: 10,
                         fontStyle: 'italic'
-                    }}>{`Gepostet von ${comment.author.screenName} vor ${displayedTime}`}</Text>
+                    }}>{`Gepostet von ${comment.author.screenName}${displayedTime}`}</Text>
                 </View>
                 <View style={styles.commentCardText}>
                     <Text>{comment.body}</Text>

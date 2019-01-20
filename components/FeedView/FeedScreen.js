@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
-import {FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {createStackNavigator} from "react-navigation";
-import {
-    Container,
-    Icon,
-} from "native-base";
+import {Container, Icon,} from "native-base";
 import Expo, {Constants} from "expo";
 import FeedWidget from './FeedWidget';
 import NewPostWidget from './NewPostWidget';
-import PostWidget from './PostWidget';
+import PostWidget from './PostScreen';
 
 export const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
 

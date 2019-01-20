@@ -15,7 +15,11 @@ export const LOAD_FEED = gql`
                         body,
                         sentiment,
                         commentCount,
-                        currentUserLikesPost
+                        currentUserLikesPost,
+                        image {
+                            id, path, filename
+                        },
+                        ytId
                     },
                     cursor
                 }

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Button, Card, CardItem, Container, Content, Fab, H1, Icon, Left, Right, Text, Thumbnail} from "native-base";
 import {Mutation, Query} from "react-apollo";
 import {LIKE_POST, LOAD_FEED, UNLIKE_POST} from "../../network/FeedGql";
-import {FlatList, RefreshControl} from "react-native";
+import {FlatList, Image, RefreshControl, View} from "react-native";
 import {defaultAvatar} from "./FeedScreen";
-import PostWidget from "./PostWidget";
+import PostWidget from "./PostScreen";
 
 export default class FeedWidget extends Component {
     constructor(props) {
@@ -14,13 +14,21 @@ export default class FeedWidget extends Component {
     }
 
     cardMedia = (post) => {
+
         if (post.ytId) {
             return (
                 <Text>TODO render yt embed here</Text>
             )
-        } else if (post.media) {
+        } else if (post.image) {
+            const url = `${process.env.API_IMG_URL}${post.image.filename}`;
             return (
-                <Text>TODO render image here</Text>
+                <View>
+                    <Image
+                        style={{width: '100%', height: 400}}
+                        source={{uri: url}}
+                        resizeMode="cover"
+                    />
+                </View>
             )
         }
     };
@@ -101,7 +109,8 @@ export default class FeedWidget extends Component {
                                                         </Button>
                                                     </Right>
                                                 </CardItem>
-                                            </Card>)
+                                            </Card>
+                                        )
                                     }
                                     }
                                 />
