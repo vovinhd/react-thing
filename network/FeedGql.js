@@ -16,6 +16,7 @@ export const LOAD_FEED = gql`
                         sentiment,
                         commentCount,
                         currentUserLikesPost,
+                        dateCreated,
                         image {
                             id, path, filename
                         },
@@ -23,6 +24,10 @@ export const LOAD_FEED = gql`
                     },
                     cursor
                 }
+            },
+            pageData {
+                count,
+                limit
             }
         }
     }

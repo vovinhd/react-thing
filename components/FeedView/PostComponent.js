@@ -20,14 +20,14 @@ import {
     Toast
 } from "native-base";
 import {Image, StyleSheet, View} from "react-native";
-import {LikeButton} from "./FeedWidget";
 import Modal from "react-native-modal";
 import {Mutation} from "react-apollo";
-import {ADD_COMMENT, LIKE_COMMENT, LOAD_POST, UNLIKE_COMMENT} from "../../network/FeedGql";
+import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_POST} from "../../network/FeedGql";
 import moment from 'moment/min/moment-with-locales';
 import de from 'moment/locale/de';
 
 moment.locale('de');
+export const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
 
 
 export default PostComponent = ({post, navigateToDetailedView, commentRefetch, close}) => {
@@ -36,12 +36,12 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
         cardMedia = <Text>TODO render yt embed here</Text>
     } else if (post.image) {
         const url = `${process.env.API_IMG_URL}${post.image.filename}`;
-        console.log(url)
+        //TODO ENHANCEMENT add lightbox?
         cardMedia = <View style={{flex: 1, width: '100%'}}>
             <Image
-                style={{width: '100%', height: 400}}
+                style={{width: '100%', height: 500}}
                 source={{uri: url}}
-                resizeMode="cover"
+                resizeMode="contain"
             />
         </View>
     }
@@ -69,40 +69,81 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
             <AddCommentWidget postId={post.id}/>
         </CardItem>
     }
-    return (
-        <Container>
-            {close && <Header>
-                <Left>
-                    <Button transparent
-                            onPress={close}>
-                        <Icon name='arrow-back'/>
-                    </Button>
-                </Left>
-                <Body>
-                <Title>{post.title}</Title>
-                </Body>
-                <Right/>
-            </Header>
-            }
-            <Content>
-                <Card>
-                    <CardItem>
-                        {cardMedia}
-                    </CardItem>
-                    <CardItem>
-                        <H1>{post.title}</H1>
-                    </CardItem>
-                    <CardItem>
-                        <Text>{post.body}</Text>
-                    </CardItem>
-                    {cardFooter}
-                </Card>
-                {commentRefetch && <CommentTreeWidget comments={post.comments} postId={post.id}
-                                                      refetch={commentRefetch}/>}
-            </Content>
+    let displayedTime = moment(post.dateCreated).fromNow();
 
-        </Container>
-    )
+    let card =
+        <Card>
+            <CardItem header bordered>
+                <Left>
+                    <Image
+                        style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 16
+                        }}
+                        source={{uri: post.author.avatar ? post.author.avatar.path : defaultAvatar}}
+                        resizeMode="contain"
+                    />
+                    <Body style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{alignSelf: 'center', flex: 1, alignItems: 'center'}}>
+                        {`Gepostet von ${post.author.screenName} ${displayedTime}`}
+                    </Text>
+                    </Body>
+                </Left>
+            </CardItem>
+            <CardItem>
+                {cardMedia}
+            </CardItem>
+            <CardItem>
+                <H1>{post.title}</H1>
+            </CardItem>
+
+            {navigateToDetailedView
+                ? <CardItem button onPress={navigateToDetailedView}>
+                    <Text>
+                        {post.body.length > 140
+                            ? `${post.body.substr(0, 139)}...`
+                            : post.body}
+                    </Text>
+                </CardItem>
+                : <CardItem>
+                    <Text>{post.body}</Text>
+                </CardItem>
+            }
+
+            {cardFooter}
+        </Card>
+    if (navigateToDetailedView) {
+        return (
+            <View>
+                {card}
+            </View>
+        )
+    } else {
+        return (
+            <Container>
+                {close && <Header>
+                    <Left>
+                        <Button transparent
+                                onPress={close}>
+                            <Icon name='arrow-back'/>
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Title>{post.title}</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                }
+                <Content>
+                    {card}
+                    {commentRefetch && <CommentTreeWidget comments={post.comments} postId={post.id}
+                                                          refetch={commentRefetch}/>}
+                </Content>
+
+            </Container>
+        )
+    }
 }
 
 class AddCommentWidget extends Component {
@@ -337,7 +378,7 @@ class CommentWidget extends Component {
                     <Text style={{
                         fontSize: 10,
                         fontStyle: 'italic'
-                    }}>{`Gepostet von ${comment.author.screenName}${displayedTime}`}</Text>
+                    }}>{`Gepostet von ${comment.author.screenName} ${displayedTime}`}</Text>
                 </View>
                 <View style={styles.commentCardText}>
                     <Text>{comment.body}</Text>
@@ -351,6 +392,45 @@ class CommentWidget extends Component {
         )
     }
 }
+
+class LikeButton extends Component {
+    likesButton = ({mutation, post}) => {
+        return (
+            <Button transparent
+                    onPress={async () => {
+                        await mutation({variables: {postId: post.id}});
+                    }}
+            >
+                <Text style={{color: post.currentUserLikesPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
+            </Button>
+        )
+    }
+
+    render() {
+        const post = this.props.post;
+        if (post.currentUserLikesPost) {
+            return (
+                <Mutation mutation={UNLIKE_POST}
+                          key={post.id}>
+                    {(unlikePost) => {
+                        return (this.likesButton({mutation: unlikePost, post: post}))
+                    }}
+                </Mutation>
+            )
+        } else {
+            return (
+                <Mutation mutation={LIKE_POST}
+                          key={post.id}
+                >
+                    {(likePost, {data}) => {
+                        return (this.likesButton({mutation: likePost, post: post}))
+                    }}
+                </Mutation>
+            )
+        }
+    }
+}
+
 
 const styles = StyleSheet.create({
     modal: {
