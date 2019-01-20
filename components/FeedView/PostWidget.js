@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from "react-native";
 import Modal from 'react-native-modal';
 import moment from 'moment/min/moment-with-locales';
 import de from 'moment/locale/de';
@@ -33,13 +33,23 @@ moment.locale('de');
 export default class PostWidget extends Component {
 
     cardMedia = (post) => {
+
         if (post.ytId) {
             return (
                 <Text>TODO render yt embed here</Text>
             )
-        } else if (post.media) {
+        } else if (post.image) {
+            const url = `${process.env.API_IMG_URL}${post.image.filename}`;
+            console.log(url)
             return (
-                <Text>TODO render image here</Text>
+                <View>
+                    <Image
+                        style={{width: '100%', height: 400}}
+                        source={{uri: url}}
+                        resizeMode="cover"
+                    />
+                    <Text>{process.env.API_IMG_URL}{post.image.filename}</Text>
+                </View>
             )
         }
     };
@@ -49,6 +59,8 @@ export default class PostWidget extends Component {
             <Container>
                 <Query query={LOAD_POST} variables={{postId: this.props.navigation.getParam('postId')}}>
                     {({loading, error, data, refetch}) => {
+                        console.log(process.env.API_IMG_URL)
+                        console.log(data.post);
                         if (loading) return <Expo.AppLoading/>;
                         if (error) {
                             console.log(error);

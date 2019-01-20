@@ -37,7 +37,7 @@ export const LOAD_POST = gql`
             dateCreated,
             commentCount,
             image {
-                id, path
+                id, path, filename
             },
             ytId,
             currentUserLikesPost,
@@ -62,10 +62,11 @@ export const LOAD_POST = gql`
 `;
 
 export const ADD_POST = gql`
-    mutation addPost($title: String!, $body: String!){
+    mutation addPost($title: String!, $body: String!, $mediaId: Int){
         addPost(post: {
             title: $title
             body: $body
+            mediaId: $mediaId
         }){
             title, body
         }
