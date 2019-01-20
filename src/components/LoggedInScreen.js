@@ -7,12 +7,13 @@ import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom
 import FeedScreen from "./Feed/FeedScreen";
 import ChallengeScreen from "./Challenges/ChallengeScreen";
 import ProfileScreen from "./Profile/ProfileScreen";
-import TreeScreen from "./Challenges/TreeScreen";
 import {createUploadLink} from "apollo-upload-client";
 import {InMemoryCache} from "apollo-cache-inmemory";
 import {setContext} from "apollo-link-context"
 import {Container} from "native-base";
 import {NotificationsScreen} from "./Notifications/NotificationsScreen";
+import {TeamsScreen} from "./Competitve/TeamsScreen";
+import material from '../../native-base-theme/variables/material';
 
 const AppNav = createMaterialBottomTabNavigator({
         FeedTab: {
@@ -24,16 +25,17 @@ const AppNav = createMaterialBottomTabNavigator({
         ChallengeTab: {
             screen: ChallengeScreen
         },
+    CompetitiveTab: {
+        screen: TeamsScreen
+    },
     ProfileTab: {
         screen: ProfileScreen
     },
-        ProgressTab: {
-            screen: TreeScreen
-        }
     }, {
-        activeTintColor: '#f0edf6',
-        inactiveTintColor: '#105229',
-        barStyle: {backgroundColor: '#179154'},
+
+    //    activeTintColor: '#f0edf6',
+    //    inactiveTintColor: '#105229',
+    barStyle: {backgroundColor: material.tabDefaultBg},
     }
 );
 
@@ -82,4 +84,4 @@ export class LoggedInScreen extends React.Component {
         );
     }
 
-};
+}
