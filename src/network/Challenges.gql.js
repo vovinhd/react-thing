@@ -17,3 +17,33 @@ export const CURRENT_CHALLENGES = gql`
         }
     }
 `;
+
+export const CURRENT_SEASON = gql`
+    query currentSeason {
+        currentSeason {
+            id,
+            startDate,
+            startOffsetDate,
+            endDate,
+            title
+        }
+    }
+`;
+
+export const COMPLETE_CHALLENGE = gql`
+    mutation completeChallenge($challengeId: Int!) {
+        completeChallenge(challengeId:$challengeId) {
+            id
+        }
+    }
+`;
+
+
+export const REJECT_CHALLENGE = gql`
+    mutation rejectChallenge($challengeId: Int!) {
+        rejectChallenge(challengeId:$challengeId) {
+            id
+        }
+    }
+`;
+
