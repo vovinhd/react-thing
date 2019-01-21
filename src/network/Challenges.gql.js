@@ -13,7 +13,8 @@ export const CURRENT_CHALLENGES = gql`
                 id,
                 title,
                 content
-            }
+            },
+            challengeCompletion {id}
         }
     }
 `;
@@ -29,6 +30,23 @@ export const CURRENT_SEASON = gql`
         }
     }
 `;
+
+export const SEASONS = gql`
+    query seasons {
+        seasons {
+            id,
+            startDate,
+            endDate,
+            seasonPlan {
+                id,
+                duration,
+                themenwoche {
+                    title
+                }
+            }
+        }
+    }
+`
 
 export const CURRENT_SEASONPLAN = gql`
     query globalCurrentChallenges {

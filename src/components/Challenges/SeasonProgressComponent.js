@@ -31,7 +31,7 @@ class Sprite extends React.PureComponent {
     }
 }
 
-export default class App extends React.Component {
+export class SeasonProgressComponent extends React.Component {
 
     static navigationOptions = {
         title: 'Fortschritt',

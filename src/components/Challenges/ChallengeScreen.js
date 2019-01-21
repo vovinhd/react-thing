@@ -6,6 +6,8 @@ import {HistoryComponent} from "./HistoryComponent";
 import {createMaterialBottomTabNavigator} from "react-navigation-material-bottom-tabs";
 import material from "../../../native-base-theme/variables/material";
 
+//TODO refactor Components in challenge hierarchy to common singleQueryComponent?
+
 const ChallengeViewsNav = createMaterialBottomTabNavigator(
     {
         SeasonPlan: {
