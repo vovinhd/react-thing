@@ -33,8 +33,8 @@ const AppNav = createMaterialBottomTabNavigator({
     },
     }, {
 
-    //    activeTintColor: '#f0edf6',
-    //    inactiveTintColor: '#105229',
+    activeTintColor: material.activeTab,
+    inactiveTintColor: "#AFD4E6",
     barStyle: {backgroundColor: material.tabDefaultBg},
     }
 );

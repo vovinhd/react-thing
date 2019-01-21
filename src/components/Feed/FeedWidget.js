@@ -5,6 +5,7 @@ import {LOAD_FEED} from "../../network/Feed.gql";
 import {FlatList, RefreshControl} from "react-native";
 import PostWidget from "./PostScreen";
 import * as Constants from "expo";
+import material from '../../../native-base-theme/variables/material';
 
 export default class FeedWidget extends Component {
     constructor(props) {
@@ -90,8 +91,7 @@ export default class FeedWidget extends Component {
                     }
                     }
                 </Query>
-                <Fab style={{backgroundColor: '#5067FF'}}
-                     position="bottomRight"
+                <Fab style={{backgroundColor: material.brandPrimary}} position="bottomRight"
                      onPress={() => this.props.navigation.navigate('NewPostWidget')}>
                     <Icon name="md-add"/>
                 </Fab>

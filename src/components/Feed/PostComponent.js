@@ -25,6 +25,7 @@ import {Mutation} from "react-apollo";
 import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_POST} from "../../network/Feed.gql";
 import moment from 'moment/min/moment-with-locales';
 import de from 'moment/locale/de';
+import material from '../../../native-base-theme/variables/material';
 
 moment.locale('de');
 export const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
@@ -401,7 +402,8 @@ class LikeButton extends Component {
                         await mutation({variables: {postId: post.id}});
                     }}
             >
-                <Text style={{color: post.currentUserLikesPost ? '#ff0000' : '#0000ff'}}>{post.sentiment} Likes</Text>
+                <Text
+                    style={{color: post.currentUserLikesPost ? '#ff0000' : material.textColor}}>{post.sentiment} Likes</Text>
             </Button>
         )
     }

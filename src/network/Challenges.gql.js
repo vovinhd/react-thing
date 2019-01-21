@@ -30,6 +30,21 @@ export const CURRENT_SEASON = gql`
     }
 `;
 
+export const CURRENT_SEASONPLAN = gql`
+    query globalCurrentChallenges {
+        globalCurrentChallenges {
+            themenwoche {
+                title
+                content
+                headerImage {url}
+                createdAt
+                updatedAt
+                kategorie {name}
+            }
+        }
+    }
+`;
+
 export const COMPLETE_CHALLENGE = gql`
     mutation completeChallenge($challengeId: Int!) {
         completeChallenge(challengeId:$challengeId) {
