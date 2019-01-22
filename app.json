@@ -1,19 +1,21 @@
 {
   "expo": {
-    "name": "Gutmensch?",
-    "version": "0.0.1",
+    "name": "Klimafuchs",
+    "version": "0.2.0",
     "sdkVersion": "27.0.0",
-    "icon": "./icon.png",
+    "icon": "./assets/KlimafuchsLogo.png",
+    "githubUrl": "https://github.com/vovinhd/react-thing",
+    "primaryColor": "#ABD100",
     "ios": {
-      "bundleIdentifier": "de.verein-allgemeinbildung.gutmensch"
+      "bundleIdentifier": "org.klimafuchs"
     },
     "android": {
-      "package": "de.vereinallgemeinbildung.gutmensch"
+      "package": "org.klimafuchs"
     },
-    "androidStatusBarColor": "#334393",
+    "androidStatusBarColor": "#ABD100",
     "androidStatusBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#334393"
+      "backgroundColor": "#ABD100"
     }
   }
 }
