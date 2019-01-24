@@ -9,17 +9,26 @@ import {ImagePicker} from 'expo';
 class UploadImage extends React.Component {
     state = {
         image: null,
+        width: null,
+        height: null,
         media: null,
         uploading: false,
     };
 
     uploadImage = async () => {
         this.setState({uploading: true});
+        console.log(`[INFO] ${this.constructor.name}: File ${JSON.stringify(this.state.image, null, 2)}, width: ${this.state.width}, heigth: ${this.state.height} uploading`);
+
         this.props.mutate({
-            variables: {file: this.state.image},
+            variables: {
+                file: this.state.image,
+                height: this.state.height,
+                width: this.state.width
+            },
         })
             .then(media => {
                 this.setState({uploading: false});
+                console.log(`[INFO] ${this.constructor.name}: File ${JSON.stringify(media, null, 2)} uploaded`);
 
                 this.state.media = media;
                 if (this.props.onUploadFinished) {
@@ -42,12 +51,12 @@ class UploadImage extends React.Component {
         });
         if (!result.cancelled) {
             const [name, ext] = result.uri.split('\\').pop().split('/').pop().split('.');
-            const image = new ReactNativeFile({
+            let image = new ReactNativeFile({
                 uri: result.uri,
                 type: `image/${ext}`,
                 name: `${name}.${ext}`,
             });
-            this.setState({image: image});
+            this.setState({image: image, width: result.width, height: result.height});
         }
     };
 
@@ -106,13 +115,15 @@ class UploadImage extends React.Component {
 }
 
 export default graphql(gql`
-    mutation($file: Upload!) {
-        upload(file: $file) {
+    mutation upload($file: Upload!, $height: Int!, $width: Int!) {
+        upload(file: $file, height: $height, width: $width) {
             id
             filename
             mimetype
             path
-            uploadedAt
+            uploadedAt,
+            width,
+            height
         }
     }
 `)(UploadImage)

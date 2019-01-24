@@ -26,9 +26,11 @@ import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_
 import moment from 'moment/min/moment-with-locales';
 import de from 'moment/locale/de';
 import material from '../../../native-base-theme/variables/material';
+import env from '../../env';
 
 moment.locale('de');
-export const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
+
+export const defaultAvatar = env.dev.API_IMG_URL + "avatar_default.png"; //TODO replace default avatar with local file
 
 
 export default PostComponent = ({post, navigateToDetailedView, commentRefetch, close}) => {
@@ -36,7 +38,9 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
     if (post.ytId) {
         cardMedia = <Text>TODO render yt embed here</Text>
     } else if (post.image) {
-        const url = `${process.env.API_IMG_URL}${post.image.filename}`;
+        const url = `${env.dev.API_IMG_URL}${post.image.filename}`;
+        console.log(env);
+        console.log(`fetching image from ${url}`);
         //TODO ENHANCEMENT add lightbox?
         cardMedia = <View style={{flex: 1, width: '100%'}}>
             <Image

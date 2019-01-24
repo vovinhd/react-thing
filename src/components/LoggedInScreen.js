@@ -15,7 +15,7 @@ import {NotificationsScreen} from "./Notifications/NotificationsScreen";
 import {TeamsScreen} from "./Competitve/TeamsScreen";
 import material from '../../native-base-theme/variables/material';
 
-const AppNav = createMaterialBottomTabNavigator({
+export const AppNav = createMaterialBottomTabNavigator({
         FeedTab: {
             screen: FeedScreen
         },
