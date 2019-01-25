@@ -37,7 +37,7 @@ export default class NewPostComponent extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent onPress={() => this.props.navigation.navigate('FeedComponent')}>
+                        <Button transparent onPress={() => this.props.navigation.navigate('Feed')}>
                             <Icon name='arrow-back'/>
                         </Button>
                     </Left>
