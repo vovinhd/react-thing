@@ -19,7 +19,7 @@ import {
     Title,
     Toast
 } from "native-base";
-import {Image, StyleSheet, View} from "react-native";
+import {Dimensions, Image, StyleSheet, View} from "react-native";
 import Modal from "react-native-modal";
 import {Mutation} from "react-apollo";
 import {ADD_COMMENT, LIKE_COMMENT, LIKE_POST, LOAD_POST, UNLIKE_COMMENT, UNLIKE_POST} from "../../network/Feed.gql";
@@ -39,14 +39,22 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
         cardMedia = <Text>TODO render yt embed here</Text>
     } else if (post.image) {
         const url = `${env.dev.API_IMG_URL}${post.image.filename}`;
-        console.log(env);
+        const imageAspectRatio = post.image.height / post.image.width;
+        const width = (Dimensions.get('window').width);
+        const height = (Dimensions.get('window').height);
+
         console.log(`fetching image from ${url}`);
+        console.log(`component dimensions: w = ${post.image.width}, h = ${post.image.height}`)
         //TODO ENHANCEMENT add lightbox?
-        cardMedia = <View style={{flex: 1, width: '100%'}}>
+        cardMedia = <View style={
+            {
+                flex: 1,
+            }
+        }>
             <Image
-                style={{width: '100%', height: 500}}
+                style={{width: '100%', height: width * imageAspectRatio}}
                 source={{uri: url}}
-                resizeMode="contain"
+                resizeMode={navigateToDetailedView ? "cover" : "contain"}
             />
         </View>
     }
@@ -77,7 +85,7 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
     let displayedTime = moment(post.dateCreated).fromNow();
 
     let card =
-        <Card>
+        <Card style={{flex: 1}}>
             <CardItem header bordered>
                 <Left>
                     <Image

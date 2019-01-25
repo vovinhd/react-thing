@@ -18,7 +18,7 @@ export const LOAD_FEED = gql`
                         currentUserLikesPost,
                         dateCreated,
                         image {
-                            id, path, filename
+                            id, path, filename, width, height
                         },
                         ytId
                     },
@@ -47,7 +47,7 @@ export const LOAD_POST = gql`
             dateCreated,
             commentCount,
             image {
-                id, path, filename
+                id, path, filename, width, height
             },
             ytId,
             currentUserLikesPost,
