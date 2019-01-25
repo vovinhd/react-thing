@@ -3,9 +3,9 @@ import {StyleSheet} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import {Container, Icon,} from "native-base";
 import Expo, {Constants} from "expo";
-import FeedWidget from './FeedWidget';
-import NewPostWidget from './NewPostWidget';
-import PostWidget from './PostScreen';
+import FeedComponent from './FeedComponent';
+import NewPostComponent from './NewPostComponent';
+import PostScreen from './PostScreen';
 
 export const defaultAvatar = (process.env.API_IMG_URL || "https://enviroommate.org/app-dev/img/") + "avatar_default.png"; //TODO replace default avatar with local file
 
@@ -45,21 +45,21 @@ class FeedScreen extends Component {
 
 
 const FeedNavigation = createStackNavigator({
-    FeedWidget: {
-        screen: FeedWidget
+    Feed: {
+        screen: FeedComponent
     },
-    PostWidget: {
-        screen: PostWidget
+    Post: {
+        screen: PostScreen
     },
-    NewPostWidget: {
-        screen: NewPostWidget
+    NewPost: {
+        screen: NewPostComponent
     }
 }, {
     headerMode: 'none',
     navigationOptions: {
         headerVisible: false,
     },
-    initialRouteName: 'FeedWidget',
+    initialRouteName: 'Feed',
 });
 
 const styles = StyleSheet.create({

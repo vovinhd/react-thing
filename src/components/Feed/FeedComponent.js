@@ -3,11 +3,11 @@ import {Body, Button, Container, Content, Fab, Header, Icon, Left, Right, Text, 
 import {Query} from "react-apollo";
 import {LOAD_FEED} from "../../network/Feed.gql";
 import {FlatList, RefreshControl} from "react-native";
-import PostWidget from "./PostScreen";
 import * as Constants from "expo";
 import material from '../../../native-base-theme/variables/material';
+import PostComponent from "./PostComponent";
 
-export default class FeedWidget extends Component {
+export default class FeedComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {active: true, refreshing: false, endReached: false};
@@ -52,7 +52,7 @@ export default class FeedWidget extends Component {
                                         return (
                                             <PostComponent key={post.id} post={post}
                                                            navigateToDetailedView={function () {
-                                                               this.props.navigation.navigate('PostWidget', {postId: post.id})
+                                                               this.props.navigation.navigate('Post', {postId: post.id})
                                                            }.bind(this)}/>
                                         )
                                     }
@@ -92,7 +92,7 @@ export default class FeedWidget extends Component {
                     }
                 </Query>
                 <Fab style={{backgroundColor: material.brandPrimary}} position="bottomRight"
-                     onPress={() => this.props.navigation.navigate('NewPostWidget')}>
+                     onPress={() => this.props.navigation.navigate('NewPostComponent')}>
                     <Icon name="md-add"/>
                 </Fab>
             </Container>

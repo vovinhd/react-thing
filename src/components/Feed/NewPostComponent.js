@@ -20,7 +20,7 @@ import {Mutation} from "react-apollo";
 import {ADD_POST} from "../../network/Feed.gql";
 import UploadImage from "../UploadImage";
 
-export default class NewPostWidget extends Component {
+export default class NewPostComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ export default class NewPostWidget extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent onPress={() => this.props.navigation.navigate('FeedWidget')}>
+                        <Button transparent onPress={() => this.props.navigation.navigate('FeedComponent')}>
                             <Icon name='arrow-back'/>
                         </Button>
                     </Left>
@@ -76,7 +76,7 @@ export default class NewPostWidget extends Component {
                                             mediaId: this.state.mediaId
                                         }
                                     });
-                                    this.props.navigation.navigate('FeedWidget')
+                                    this.props.navigation.navigate('FeedComponent')
                                 }}>
                                     <Text> Next </Text>
                                 </Button>

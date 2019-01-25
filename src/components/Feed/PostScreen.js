@@ -12,8 +12,6 @@ export default class PostScreen extends Component {
             <Container>
                 <Query query={LOAD_POST} variables={{postId: this.props.navigation.getParam('postId')}}>
                     {({loading, error, data, refetch}) => {
-                        console.log(process.env.API_IMG_URL)
-                        console.log(data.post);
                         if (loading) return <Expo.AppLoading/>;
                         if (error) {
                             console.log(error);
@@ -21,7 +19,7 @@ export default class PostScreen extends Component {
                         }
                         return (
                             <PostCard post={data.post} commentRefetch={refetch}
-                                      close={() => this.props.navigation.navigate('FeedWidget')}/>
+                                      close={() => this.props.navigation.navigate('Feed')}/>
                         )
                     }}
                 </Query>

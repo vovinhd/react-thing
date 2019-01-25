@@ -42,9 +42,6 @@ export default PostComponent = ({post, navigateToDetailedView, commentRefetch, c
         const imageAspectRatio = post.image.height / post.image.width;
         const width = (Dimensions.get('window').width);
         const height = (Dimensions.get('window').height);
-
-        console.log(`fetching image from ${url}`);
-        console.log(`component dimensions: w = ${post.image.width}, h = ${post.image.height}`)
         //TODO ENHANCEMENT add lightbox?
         cardMedia = <View style={
             {
@@ -219,8 +216,6 @@ class AddCommentWidget extends Component {
                                       query: LOAD_POST,
                                       variables: {postId: this.props.postId}
                                   });
-                                  console.log(data.post);
-                                  console.log(addComment);
                                   data.post.comments.push(addComment);
                                   cache.writeQuery({
                                       id: this.props.postId,
