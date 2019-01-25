@@ -92,7 +92,7 @@ export default class FeedComponent extends Component {
                     }
                 </Query>
                 <Fab style={{backgroundColor: material.brandPrimary}} position="bottomRight"
-                     onPress={() => this.props.navigation.navigate('NewPostComponent')}>
+                     onPress={() => this.props.navigation.navigate('NewPost')}>
                     <Icon name="md-add"/>
                 </Fab>
             </Container>
