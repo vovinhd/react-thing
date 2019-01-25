@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 import {ReactNativeFile} from 'apollo-upload-client';
 import React from 'react';
-import {Image, ImageBackground, View} from 'react-native';
+import {Dimensions, Image, ImageBackground, View} from 'react-native';
 import {Button, Icon, Text} from 'native-base';
 import {ImagePicker} from 'expo';
 
@@ -72,17 +72,22 @@ class UploadImage extends React.Component {
         let uploadButton;
         if (this.state.media) {
             return (
-                <ImageBackground
-                    style={{flex: 1, height: 300, backgroundColor: "#0ff", alignSelf: 'stretch'}}
-                    resizeMode="cover"
-                    source={{uri: image.uri}}>
-                    <Icon name="md-checkmark"/>
-                </ImageBackground>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <ImageBackground
+                        style={{flex: 1, height: 300, backgroundColor: "#0ff", alignSelf: 'stretch'}}
+                        resizeMode="cover"
+                        source={{uri: image.uri}}>
+                        <Icon name="md-checkmark" style={{color: '#ffff00', backgroundColor: '#ff00ff'}}/>
+                    </ImageBackground>
+                </View>
             )
         }
         if (image) {
+            const imageAspectRatio = this.state.image.height / this.state.image.width;
+            const width = (Dimensions.get('window').width);
+
             return (
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{flex: 0, alignItems: 'center', justifyContent: 'center'}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Button warning onPress={this.reset}>
                             <Text>Abbrechen</Text>
@@ -92,8 +97,12 @@ class UploadImage extends React.Component {
                         </Button>
                     </View>
                     <Image
-                        style={{flex: 1, height: 300, backgroundColor: "#0ff", alignSelf: 'stretch'}}
-                        resizeMode="cover"
+                        style={{
+                            width: '100%',
+                            height: width * imageAspectRatio,
+                            backgroundColor: "#0ff",
+                        }}
+                        resizeMode="contain"
                         source={{uri: image.uri}}
                     />
 

@@ -76,7 +76,7 @@ export default class NewPostComponent extends Component {
                                             mediaId: this.state.mediaId
                                         }
                                     });
-                                    this.props.navigation.navigate('FeedComponent')
+                                    this.props.navigation.navigate('Feed')
                                 }}>
                                     <Text> Next </Text>
                                 </Button>
@@ -107,8 +107,8 @@ class MediaInput extends Component {
     render() {
         if (this.state.awaitsMedia) {
             return (
-                <View style={{height: 400}}>
-                    <UploadImage onCancel={this.reset} onUploadFinished={(media) => {
+                <View style={{flex: 1}}>
+                    <UploadImage style={{height: 400}} onCancel={this.reset} onUploadFinished={(media) => {
                         if (this.props.onSelected) {
 
                             this.props.onSelected({mediaId: media.id})

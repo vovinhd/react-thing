@@ -50,8 +50,8 @@ class ProfileScreen extends Component {
 
                 <Header />
                 <Content padder>
-                    <Card transparent>
-                        <CardItem>
+                    <Card transparent style={{flex: 1}}>
+                        <CardItem style={{flex: 1}}>
                             <Body>
                             <Text>ProfileScreen</Text>
                             <UploadImage onUploadFinished={(media) => console.log(media)}/>
