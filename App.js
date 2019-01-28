@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator, createSwitchNavigator} from "react-navigation";
 import {Root, StyleProvider} from 'native-base';
 import LoginScreen from "./src/components/PreLogin/LoginScreen";
@@ -11,30 +11,43 @@ import material from './native-base-theme/variables/material';
 import store from "./src/persistence/store"
 import {LoggedInScreen} from "./src/components/LoggedInScreen";
 import {ForgotPasswordScreen} from "./src/components/PreLogin/ForgotPasswordScreen";
+import Expo from "expo";
 
-class AppRoot extends Component {
+export default class AppRoot extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: true
+        };
+    }
+
+    async componentWillMount() {
+        await Expo.Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+            Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
+        });
+        this.setState({loading: false})
+    }
+
     render() {
+        if (this.state.loading) {
+            return (
+                <Expo.AppLoading/>
+            )
+        }
         return (
             <Provider store={store}>
                 <StyleProvider style={getTheme(material)}>
-                    <Root>
-                        <RootNavigation/>
-                    </Root>
+                    <SafeAreaView style={styles.safeArea}>
+                        <Root>
+                            <RootNavigation/>
+                        </Root>
+                    </SafeAreaView>
                 </StyleProvider>
             </Provider>
         )
-    }
-}
-
-class HomeScreen extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text>Open up App.js to start working on your app!</Text>
-                <Text>Changes you make will automatically reload.</Text>
-                <Text>Shake your phone to open the developer menu.</Text>
-            </View>
-        );
     }
 }
 
@@ -92,8 +105,6 @@ const RootNavigation = createSwitchNavigator({
     initialRouteName: 'AuthLoading'
 });
 
-export default AppRoot;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -101,4 +112,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    safeArea: {
+        flex: 1,
+        backgroundColor: material.brandInfo
+    }
 });
