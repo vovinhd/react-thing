@@ -6,12 +6,6 @@ import UploadImage from "../UploadImage";
 
 class ProfileScreen extends Component {
 
-    static navigationOptions = {
-        title: 'Profile',
-        tabBarIcon: ({focused, tintColor}) => (
-            <Icon name='md-person' style={{fontSize: 20, color: tintColor}}/>
-        ),
-    };
 
     constructor(props) {
         super(props);

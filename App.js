@@ -18,7 +18,7 @@ export default class AppRoot extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true
+            loading: true,
         };
     }
 
@@ -28,7 +28,7 @@ export default class AppRoot extends Component {
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
         });
-        this.setState({loading: false})
+        this.setState({loading: false});
     }
 
     render() {
@@ -42,12 +42,28 @@ export default class AppRoot extends Component {
                 <StyleProvider style={getTheme(material)}>
                     <SafeAreaView style={styles.safeArea}>
                         <Root>
-                            <RootNavigation/>
+                            <AppDelegate/>
                         </Root>
                     </SafeAreaView>
                 </StyleProvider>
             </Provider>
         )
+    }
+}
+
+class AppDelegate extends Component {
+    state = {
+        userToken: undefined,
+    };
+
+    async componentDidMount() {
+        const userToken = await AsyncStorage.getItem('token');
+        console.log(userToken ? "is logged in" : "is logged out");
+        console.log(store.getState)
+    }
+
+    render() {
+        return (this.state.userToken ? <LoggedInScreen/> : <AuthNav/>)
     }
 }
 
